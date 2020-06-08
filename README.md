@@ -2,6 +2,7 @@
 
 Cinema is an individual-based model that simulates the coevolution of movement strategies between predators and prey in a spatially explicit environment. 
 
+https://github.com/christophnetz/Cinema_git
 
 ## System requirements
 
@@ -11,10 +12,14 @@ Further,OpenGL 4.6 or higher is required.
 
 ## Versions
 
-Users interested in the reproduction of our published data should turn to the master branch of this repository. 
-A simplified model version is available under the demo branch. Users who just wish to try different parameters can 
-download a zip-folder with the executable, premade batch scripts and config files. Parameters can of course also be changed 
-manually within the config files.
+Users who wish to experiment with our model and try out different parameter combinations should download the zip folder 
+with the executable accessible under ... 
+Here we have prepared a number of simulations with different parameter files (config*.ini) 
+that can be executed through the corresponding batch script. Of course, the parameters can also be altered 
+independently by the user in the parameter files (see section on parameters for permissible values).
+The model code of this slightly simplified version is available on the branch "demo" of this GitHub repository. 
+The full model, including the complete output functionality used in the preparation of the manuscript can be accessed
+on the master branch.
 
 
 ## Parameters
@@ -32,7 +37,7 @@ We used T = 100 as the default setting.
 ### N
 The parameters pred.N and prey.N sets the population size for predators (fixed) and prey (fixed at the beginning of a generation, then reduced by predation),
 and the ratio between them. We used prey.N = 10,000 as default and either pred.N = 10,000 or pred.N = 1,000 to vary between
-a predator-prey ratio of 1:1 and 1:10.
+a predator-prey ratio of 1:1 and 1:10. Much larger values should be avoided due to computational constraints.
 
 ### L
 The parameter L sets the sensory and movement range diameter for predators and prey and can take the values of {3, 5, 7, 33}. 
@@ -57,8 +62,8 @@ the Moore Neighborhood. We used Sprout_radius values of 1 and 10 as our default 
 Sprout_radius can be set to 256 (or landscape.dim/2).
 
 ### mutation_prob
-The mutation_prob parameter sets the probability, with which a network weight mutates during reproduction. 
-Mutations are applied to offspring and effect sizes are drawn from a Cauchy distribution. 
+The mutation_prob parameter sets the probability with which a network weight mutates during reproduction. 
+Mutations are applied to offspring and the effect sizes are drawn from a Cauchy distribution. 
 By default, mutation_prob =  0.001.
 
 ### mutationstep
@@ -90,6 +95,26 @@ By default, predation_chance = 0.5
 The dim parameter controls the edge length of the landscape, which is a square-shaped grid with wrapped boundaries (thus a torus).
 The number of cells is thus dim squared, and the default parameter is dim = 512.
 
+## Graphical User Interface
+Users can follow the simulation through a graphical representation that includes three windows:
+1) A depiction of the landscape that shows amounts of grass in green, herbivore densities in blue and predator densities in red.
+2) A heatmap of the evolved weight values
+3) A timeline plot 
+
+The simulation can be paused or unpaused by pressing the space bar. When paused, the simulation can be advanced by 
+single time steps using the right arrow key, or by whole generations using the Page Down key. To zoom into 
+parts of the landscape, use Scroll, to move in the landscape use the arrow keys or hold left-click pressed and move the mouse.
+The three color layers can be individually selected or switched off by right-click on the landscape. The color intensity 
+of the three layers can be modulated by holding a combination of keys and scrolling (Ctrl+shift+scroll -> green, 
+shift+scroll -> blue, Ctrl+scroll -> red). 
+The heatmap of weights can be set to different color codes (right-click) and also be zoomed in using Scroll and moved up and down 
+by holding left-click pressed. 
+The timeline plot is closed by default and can be opened under View > Timeline. As before, the herbivore population 
+is depicted in blue and the predator population in red. The x-axis goes from 0 to G and can be zoomed into by scrolling 
+and moved around with left-click held pressed. Different y-axis parameters can be selected using right-click. The default
+is average population fitness (=performance), the other options are average fitness of reproductive individuals, 
+reproductive individuals, reproductive clades (number of unique artificial neural network lineages that produce offspring),
+and complexity (proportion of non-zero weights in the population).
 
 
 ## Authors
