@@ -153,27 +153,6 @@ namespace cine2 {
         simulate_timestep();
         simulation_observer_notify(POST_TIMESTEP);
 		
-        // to print one screenshot or picture		
-        
-  //      if (g_ % 50 == 0 && t_ == 50) {
-		//	
-  //    std::string filetype = ".png";
-
-  //    const std::string picfile = "../settings/" + param_.outdir + std::to_string(g_) + filetype;
-
-  //    //std::cout << picfile << std::endl;
-
-
-
-  //    Image screenshot2(std::string("../settings/screenshot.png"));
-
-		//	layer_to_image_channel(screenshot2, landscape_[Landscape::Layers::prey], blue);
-		//	layer_to_image_channel(screenshot2, landscape_[Landscape::Layers::pred], red);
-		//	layer_to_image_channel(screenshot2, landscape_[Landscape::Layers::grass], green);
-		//	save_image(screenshot2, std::string(picfile));
-		//}
-		//
-		//to print one screenshot end
       }
 
 
