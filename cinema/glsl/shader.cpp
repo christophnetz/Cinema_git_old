@@ -84,11 +84,11 @@ namespace shader {
       float prey = layer_mask.x * texture(Texture, vec3(gTex.x, gTex.y, 0)).r;
       float pred = layer_mask.y * texture(Texture, vec3(gTex.x, gTex.y, 1)).r;
       float grass = layer_mask.z * texture(Texture, vec3(gTex.x, gTex.y, 2)).r;
-      float risk = layer_mask.w * texture(Texture, vec3(gTex.x, gTex.y, 3)).r;
+      //float risk = layer_mask.w * texture(Texture, vec3(gTex.x, gTex.y, 3)).r;
       
       // draw grass below pred & prey
       //grass *= (0.0 < (prey + pred)) ? 0.0 : 1.0;
-      FragColor.rgb = vec3(pred, grass, prey) + risk;
+      FragColor.rgb = vec3(pred, grass, prey); // + risk
     }
 
   )glsl";

@@ -117,7 +117,7 @@ namespace cine2 {
       prey = 0,     // convoluted prey_count
       pred,         // convoluted pred_count
       grass,
-      risk,       
+      //risk,       
       prey_count,
       pred_count,
       temp,         // scratch for computation

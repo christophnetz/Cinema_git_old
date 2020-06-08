@@ -99,7 +99,6 @@ namespace cine2 {
 
     struct
     {
-      image_layer risk;
       float max_grass_cover;
 	  float grass_growth;
 	  float grass_deplete; //*&*
@@ -111,7 +110,7 @@ namespace cine2 {
     {
       std::deque<std::pair<int,int>> breakpoints{};
       bool wait_for_close;
-      std::array<bool, 4> selected;
+      std::array<bool, 3> selected;
     } gui;
 
     std::string init_pred_ann;

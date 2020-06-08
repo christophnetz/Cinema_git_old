@@ -63,7 +63,7 @@ namespace cine2 {
     void assess_fitness();
     void create_new_generations();
     void resolve_grazing_and_attacks();
-    void init_layer(image_layer imla);
+    void init_layer();
     void init_anns_from_archive(Population& Pop, archive::iarch& ia);
 
     int g_, t_;

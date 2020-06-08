@@ -32,8 +32,8 @@ namespace cine2 {
     // initialize rdist
     assess_fitness();
 
-    // initial landscape layers from image fies
-    init_layer(param_.landscape.risk);
+    // initialize landscape
+    init_layer();
     if (landscape_.dim() < 32) throw std::runtime_error("Landscape too small");
 
     // full grass cover
@@ -221,7 +221,6 @@ namespace cine2 {
 	const float grass_deplete = param_.landscape.grass_deplete;  //*&*
     LayerView prey_count = landscape_[Layers::prey_count];
     LayerView pred_count = landscape_[Layers::pred_count];
-    LayerView risk = landscape_[Layers::risk];
     LayerView grass = landscape_[Layers::grass];
     LayerView old_grass = landscape_[Layers::temp];
     old_grass.copy(grass);
@@ -232,7 +231,7 @@ namespace cine2 {
     for (auto pred = pred_.pop.data(); pred != last_pred; ++pred) {
       const Coordinate pos = pred->pos;
       if (prey_count(pos)) {
-        if (std::bernoulli_distribution(risk(pos))(rnd::reng)) {
+        if (std::bernoulli_distribution(0.5)(rnd::reng)) {
           attacking_pred_.push_back(pred);
         }
         else {
@@ -280,16 +279,11 @@ namespace cine2 {
   }
 
 
-  void Simulation::init_layer(image_layer imla)
+  void Simulation::init_layer()
   {
-    Image image(std::string("../settings/") + imla.image);
     if (landscape_.dim() == 0) {
-      landscape_ = Landscape(image.width());
+      landscape_ = Landscape(512); //replace with dim parameter
     }
-    if (!(image.width() == landscape_.dim() && image.height() == landscape_.dim())) {
-      throw std::runtime_error("image dimension mismatch");
-    }
-    image_channel_to_layer(landscape_[imla.layer], image, imla.channel);
   }
 
 

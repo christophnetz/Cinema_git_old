@@ -43,8 +43,8 @@ namespace cinema {
   {
     layer_mask_ = { 1.f / sim_state_->sim()->param().landscape.prey_kernel.maxK(),
                     1.f / sim_state_->sim()->param().landscape.pred_kernel.maxK(),
-                    1.f,
-                    1.f }; 
+                    1.f/*,
+                    1.f */}; 
     org_layer_mask_ = layer_mask_;
     selected_ = sim_state_->sim()->param().gui.selected;
     camera_.reset( new glsl::Camera());
@@ -186,16 +186,14 @@ namespace cinema {
   const cine2::Landscape::Layers GLLandscapeWin::srcLayers[LAYERS::MAX_LAYER] = {
     cine2::Landscape::Layers::prey,
     cine2::Landscape::Layers::pred,
-    cine2::Landscape::Layers::grass,
-    cine2::Landscape::Layers::risk
+    cine2::Landscape::Layers::grass
   };
 
 
   const char* GLLandscapeWin::SELECTION_DISCR[GLLandscapeWin::SELECTION::MAX_SELECTION] = {
     "prey",
     "predators",
-    "grass",
-    "risk"
+    "grass"
   };
 
 
