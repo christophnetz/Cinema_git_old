@@ -51,42 +51,42 @@ except that it contains two recursive weights, enabling individuals to keep trac
 weights, but implements an intermediate hidden layer of three nodes, resulting in a total of 16 weighing factors. Due to the 
 intermediate layer, more complex input-output relations can be realized. 
 
-###Sprout_radius
+### Sprout_radius
 Sprout_radius sets the dispersal range, in which offspring are distributed. Sprout_radius of 1 corresponds again to 
 the Moore Neighborhood. We used Sprout_radius values of 1 and 10 as our default parameters. For global offspring dispersal,
 Sprout_radius can be set to 256 (or landscape.dim/2).
 
-###mutation_prob
+### mutation_prob
 The mutation_prob parameter sets the probability, with which a network weight mutates during reproduction. 
 Mutations are applied to offspring and effect sizes are drawn from a Cauchy distribution. 
 By default, mutation_prob =  0.001.
 
-###mutationstep
+### mutationstep
 If a weight mutates, the new weight value is given by the old value plus a mutation effect 
 that is drawn from a Cauchy distribution with location 0 and scale equal to the mutationstep parameter.
 By default, mutationstep = 0.001.
 
-###noise_sigma
+### noise_sigma
 The information inputs, based on which individuals made movement decisions, were subjected to some perceptual noise that 
 was implemented as follows: Inputs were multiplied by a random value drawn from a uniform distribution U(1.0 - noise_sigma, 1.0 + noise_sigma).
 By default, noise_sigma = 0.1. An interesting question of future research could be, how perceptual noise evolves during predator-prey coevolution and
 in the presence of an energetic trade-off.
 
-###input_mask
+### input_mask
 The input_mask parameter can be used to turn off any of the three information inputs {prey, pred, grass}.
 For example, figure 4 in our manuscript shows a simulation, where prey.input_mask was {1,1,1} and pred.input_mask was {0,1,0}.
 By default, however, all information inputs are turned on (input_mask = {1,1,1}). 
 
-###grass_growth
+### grass_growth
 The grass_growth parameter controls the amount by which grass increases in each time step, up until a maximum value of 1 
 is reached. By default, grass growth = 0.01
 
-###predation_chance
+### predation_chance
 The predation_chance parameter determines, how likely an encounter between a predator and a prey on the same cell 
 will result in a successful predation event, during which the prey is killed and consumed by the predator.
 By default, predation_chance = 0.5
 
-###dim
+### dim
 The dim parameter controls the edge length of the landscape, which is a square-shaped grid with wrapped boundaries (thus a torus).
 The number of cells is thus dim squared, and the default parameter is dim = 512.
 
