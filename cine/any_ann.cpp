@@ -30,7 +30,6 @@ namespace cine2 {
       mutate(const Param::ind_param& iparam, bool Fixed)
       : mdist(iparam.mutation_prob),
         sdist(0.0f, iparam.mutation_step),
-        kdist(iparam.mutation_knockout),
         fixed(Fixed)
       {
       }
@@ -41,7 +40,6 @@ namespace cine2 {
         if (!fixed) {
           for (int w = 0; w < Neuron::total_weights; ++w) {
             if (mdist(rnd::reng)) { state[w] += sdist(rnd::reng); }
-            if (kdist(rnd::reng)) { state[w] = 0.f; }
           }
         }
         // clear feedback scratch
@@ -52,7 +50,6 @@ namespace cine2 {
 
       const std::bernoulli_distribution mdist;
       const std::cauchy_distribution<float> sdist;
-      const std::bernoulli_distribution kdist;
       bool fixed;
     };
 

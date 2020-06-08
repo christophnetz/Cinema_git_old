@@ -76,9 +76,8 @@ namespace cine2 {
       int sprout_radius;
       float mutation_prob;
       float mutation_step;
-      float mutation_knockout;
       float noise_sigma;
-      float cmplx_penalty;
+      //float cmplx_penalty;
 
       std::array<int, 3> input_layers;
       std::array<float, 3> input_mask;
@@ -87,14 +86,14 @@ namespace cine2 {
     ind_param prey;
     ind_param pred;
 
-    static float prey_fitness(const Individual& ind, float cmplx, float penalty)
+    static float prey_fitness(const Individual& ind)
     {
-      return ind.alive() ? std::max(0.f, ind.food - cmplx * penalty) : 0.0f;
+      return ind.alive() ? std::max(0.f, ind.food) : 0.0f;
     }
 
-    static float pred_fitness(const Individual& ind, float cmplx, float penalty)
+    static float pred_fitness(const Individual& ind)
     {
-      return std::max(0.f, ind.food - cmplx * penalty);
+      return std::max(0.f, ind.food);
     }
 
     struct

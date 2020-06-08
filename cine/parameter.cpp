@@ -41,9 +41,8 @@ namespace cine2 {
     clp_optional_val(prey.sprout_radius, 10000);
     clp_optional_val(prey.mutation_prob, 0.001f);
     clp_optional_val(prey.mutation_step, 0.001f);
-    clp_optional_val(prey.mutation_knockout, 0.001f);
     clp_optional_val(prey.noise_sigma, 0.1f);
-    clp_optional_val(prey.cmplx_penalty, 0.01f);
+    //clp_optional_val(prey.cmplx_penalty, 0.01f);
 
     param.prey.input_layers = { { Layers::prey, Layers::pred, Layers::grass } };
     clp_optional_vec(prey.input_layers, param.prey.input_layers);
@@ -57,9 +56,8 @@ namespace cine2 {
     clp_optional_val(pred.sprout_radius, 10000);
     clp_optional_val(pred.mutation_prob, 0.001f);
     clp_optional_val(pred.mutation_step, 0.001f);
-    clp_optional_val(pred.mutation_knockout, 0.001f);
     clp_optional_val(pred.noise_sigma, 0.1f);
-    clp_optional_val(pred.cmplx_penalty, 0.01f);
+    //clp_optional_val(pred.cmplx_penalty, 0.01f);
 
     param.pred.input_layers = {{ Layers::prey, Layers::pred, Layers::grass } };
     clp_optional_vec(pred.input_layers, param.pred.input_layers);
@@ -135,9 +133,8 @@ namespace cine2 {
     stream(prey.sprout_radius);
     stream(prey.mutation_prob);
     stream(prey.mutation_step);
-    stream(prey.mutation_knockout);
     stream(prey.noise_sigma);
-    stream(prey.cmplx_penalty);
+    //stream(prey.cmplx_penalty);
     stream_array(prey.input_layers);
     stream_array(prey.input_mask);
     os << '\n';
@@ -148,9 +145,8 @@ namespace cine2 {
     stream(pred.sprout_radius);
     stream(pred.mutation_prob);
     stream(pred.mutation_step);
-    stream(pred.mutation_knockout);
     stream(pred.noise_sigma);
-    stream(pred.cmplx_penalty);
+    //stream(pred.cmplx_penalty);
     stream_array(pred.input_layers);
     stream_array(pred.input_mask);
     os << '\n';

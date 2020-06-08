@@ -76,14 +76,14 @@ namespace cine2 {
                         const Param::ind_param& iparam, 
                         FITNESSFUN fitness_fun)
     {
-      const float cmplx_penalty = iparam.cmplx_penalty;
+      //const float cmplx_penalty = iparam.cmplx_penalty;
       const auto& pop = population.pop;
       const auto& ann = population.ann;
       auto& fitness = population.fitness;
       const int N = static_cast<int>(pop.size());
 #     pragma omp parallel for schedule(static)
       for (int i = 0; i < N; ++i) {
-        fitness[i] = fitness_fun(pop[i], ann->complexity(i), cmplx_penalty);
+        fitness[i] = fitness_fun(pop[i]);
       }
       population.rdist.mutate(fitness.cbegin(), fitness.cend());
     }
