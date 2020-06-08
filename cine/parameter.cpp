@@ -64,6 +64,8 @@ namespace cine2 {
 
     clp_optional_val(landscape.max_grass_cover, 1.0f);
     clp_optional_val(landscape.grass_growth, 0.01f);
+    clp_optional_val(landscape.predation_chance, 0.5f);
+    clp_optional_val(landscape.dim, 512);
 
 
     clp_optional_val(gui.wait_for_close, true);
@@ -148,6 +150,8 @@ namespace cine2 {
 
     stream(landscape.max_grass_cover);
     stream(landscape.grass_growth);
+    stream(landscape.predation_chance);
+    stream(landscape.dim);
 
 
     return os;

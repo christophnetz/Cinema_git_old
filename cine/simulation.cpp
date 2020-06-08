@@ -33,7 +33,7 @@ namespace cine2 {
     assess_fitness();
 
     // initialize landscape
-    init_layer();
+    init_layer(param_.landscape.dim);
     if (landscape_.dim() < 32) throw std::runtime_error("Landscape too small");
 
     // full grass cover
@@ -217,6 +217,7 @@ namespace cine2 {
   void Simulation::resolve_grazing_and_attacks()
   {
     using Layers = Landscape::Layers;
+    const float predation_chance = param_.landscape.predation_chance;
     LayerView prey_count = landscape_[Layers::prey_count];
     LayerView pred_count = landscape_[Layers::pred_count];
     LayerView grass = landscape_[Layers::grass];
@@ -229,7 +230,7 @@ namespace cine2 {
     for (auto pred = pred_.pop.data(); pred != last_pred; ++pred) {
       const Coordinate pos = pred->pos;
       if (prey_count(pos)) {
-        if (std::bernoulli_distribution(0.5)(rnd::reng)) {
+        if (std::bernoulli_distribution(predation_chance)(rnd::reng)) {
           attacking_pred_.push_back(pred);
         }
         else {
@@ -270,10 +271,10 @@ namespace cine2 {
   }
 
 
-  void Simulation::init_layer()
+  void Simulation::init_layer(int dim)
   {
     if (landscape_.dim() == 0) {
-      landscape_ = Landscape(512); //replace with dim parameter
+      landscape_ = Landscape(dim); //replace with dim parameter
     }
   }
 

@@ -99,6 +99,8 @@ namespace cine2 {
     {
       float max_grass_cover;
       float grass_growth;
+      float predation_chance;
+      int dim;
       GaussFilter<3> prey_kernel;
       GaussFilter<3> pred_kernel;
     } landscape;
