@@ -3,9 +3,9 @@
 #include <stdexcept>
 #include "cine/simulation.h"
 #include "cine/cmd_line.h"
-#include "cine/cnObserver.h"
+//#include "cine/cnObserver.h"
 #include "cinema/AppWin.h"
-#include <cine/archive.hpp>
+//#include <cine/archive.hpp>
 
 
 using namespace cine2;
@@ -40,9 +40,9 @@ int main(int argc, const char** argv)
     // create observer chain
     auto headObserver = std::unique_ptr<Observer>(new Observer());    // dummy observer for chaining
     std::unique_ptr<Observer> cmdline_observer = quiet ? nullptr : CreateSimpleObserver();
-    std::unique_ptr<Observer> cn_observer = param.outdir.empty() ? nullptr : CreateCnObserver(param.outdir);
+    //std::unique_ptr<Observer> cn_observer = param.outdir.empty() ? nullptr : CreateCnObserver(param.outdir);
     headObserver->chain_back(cmdline_observer.get());
-    headObserver->chain_back(cn_observer.get());
+    //headObserver->chain_back(cn_observer.get());
     if (!host->run(headObserver.get(), param)) {
       std::cerr << "\nSimulation terminated.\nBailing out.\n";
     }

@@ -48,24 +48,11 @@ namespace cine2 {
     landscape_.update_occupancy(Layers::prey_count, Layers::prey, prey_.pop.cbegin(), prey_.pop.cend(), param_.landscape.prey_kernel);
     landscape_.update_occupancy(Layers::pred_count, Layers::pred, pred_.pop.cbegin(), pred_.pop.cend(), param_.landscape.pred_kernel);
 
-    // optional: initialization from former runs
-    if (!param_.init_prey_ann.empty()) {
-      init_anns_from_archive(prey_, archive::iarch(param_.init_prey_ann));
-    }
-    if (!param_.init_pred_ann.empty()) {
-      init_anns_from_archive(pred_, archive::iarch(param_.init_pred_ann));
-    }
+
   }
 
 
-  void Simulation::init_anns_from_archive(Population& Pop, archive::iarch& ia)
-  {
-    auto cm = ia.extract(param_.initG >= 0 ? std::min(param_.initG, param_.G - 1) : param_.G - 1);
-    if (cm.un != Pop.ann->N()) throw cmd::parse_error("Number of ANNs doesn't match");
-    if (cm.usize != Pop.ann->type_size()) throw cmd::parse_error("ANN state size doesn't match");
-    auto dst = Pop.ann->data();
-    uncompress(dst, cm, Pop.ann->stride() * sizeof(float));
-  }
+
 
 
   namespace detail {

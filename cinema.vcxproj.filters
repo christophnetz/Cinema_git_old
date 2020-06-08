@@ -56,12 +56,6 @@
     <ClCompile Include="cine\any_ann.cpp">
       <Filter>cine</Filter>
     </ClCompile>
-    <ClCompile Include="cine\cnObserver.cpp">
-      <Filter>cine</Filter>
-    </ClCompile>
-    <ClCompile Include="cine\archive.cpp">
-      <Filter>cine</Filter>
-    </ClCompile>
     <ClCompile Include="cinema\GLTimeLineWin.cpp">
       <Filter>cinema</Filter>
     </ClCompile>
@@ -175,12 +169,6 @@
       <Filter>cinema</Filter>
     </ClInclude>
     <ClInclude Include="cine\any_ann.hpp">
-      <Filter>cine</Filter>
-    </ClInclude>
-    <ClInclude Include="cine\cnObserver.h">
-      <Filter>cine</Filter>
-    </ClInclude>
-    <ClInclude Include="cine\archive.hpp">
       <Filter>cine</Filter>
     </ClInclude>
     <ClInclude Include="cinema\glsl\wgl_context.hpp">

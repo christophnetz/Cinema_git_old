@@ -9,7 +9,6 @@
 #include "observer.h"
 #include "any_ann.hpp"
 #include "analysis.h"
-#include "archive.hpp"
 
 
 namespace cine2 {
@@ -64,7 +63,6 @@ namespace cine2 {
     void create_new_generations();
     void resolve_grazing_and_attacks();
     void init_layer(int dim);
-    void init_anns_from_archive(Population& Pop, archive::iarch& ia);
 
     int g_, t_;
     const Param param_;

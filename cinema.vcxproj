@@ -181,8 +181,6 @@
     <ClCompile Include="cinema\stdafx.cpp" />
     <ClCompile Include="cine\analysis.cpp" />
     <ClCompile Include="cine\any_ann.cpp" />
-    <ClCompile Include="cine\archive.cpp" />
-    <ClCompile Include="cine\cnObserver.cpp" />
     <ClCompile Include="cine\image.cpp" />
     <ClCompile Include="cine\parameter.cpp" />
     <ClCompile Include="cine\rnd.cpp" />
@@ -213,9 +211,7 @@
     <ClInclude Include="cine\analysis.h" />
     <ClInclude Include="cine\ann.hpp" />
     <ClInclude Include="cine\any_ann.hpp" />
-    <ClInclude Include="cine\archive.hpp" />
     <ClInclude Include="cine\cmd_line.h" />
-    <ClInclude Include="cine\cnObserver.h" />
     <ClInclude Include="cine\convolution.h" />
     <ClInclude Include="cine\game_watches.hpp" />
     <ClInclude Include="cine\histogram.hpp" />
