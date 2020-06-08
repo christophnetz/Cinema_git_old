@@ -13,7 +13,7 @@ namespace filesystem = std::filesystem;
 
 namespace cine2 {
 
-  
+
 #define clp_required(x) (param.x = clp.required<decltype(param.x )>( #x ))
 #define clp_optional_val(x, val) (param.x = clp.optional_val( #x, val))
 #define clp_optional_vec(x, val) (clp.optional_vec( #x, val))
@@ -42,7 +42,6 @@ namespace cine2 {
     clp_optional_val(prey.mutation_prob, 0.001f);
     clp_optional_val(prey.mutation_step, 0.001f);
     clp_optional_val(prey.noise_sigma, 0.1f);
-    //clp_optional_val(prey.cmplx_penalty, 0.01f);
 
     param.prey.input_layers = { { Layers::prey, Layers::pred, Layers::grass } };
     clp_optional_vec(prey.input_layers, param.prey.input_layers);
@@ -57,16 +56,14 @@ namespace cine2 {
     clp_optional_val(pred.mutation_prob, 0.001f);
     clp_optional_val(pred.mutation_step, 0.001f);
     clp_optional_val(pred.noise_sigma, 0.1f);
-    //clp_optional_val(pred.cmplx_penalty, 0.01f);
 
-    param.pred.input_layers = {{ Layers::prey, Layers::pred, Layers::grass } };
+    param.pred.input_layers = { { Layers::prey, Layers::pred, Layers::grass } };
     clp_optional_vec(pred.input_layers, param.pred.input_layers);
     param.pred.input_mask = { { 1, 1, 1 } };
     clp_optional_vec(pred.input_mask, param.pred.input_mask);
 
     clp_optional_val(landscape.max_grass_cover, 1.0f);
-	clp_optional_val(landscape.grass_growth, 0.01f);
-	clp_optional_val(landscape.grass_deplete, 1.0f); //*&*
+    clp_optional_val(landscape.grass_growth, 0.01f);
 
 
     clp_optional_val(gui.wait_for_close, true);
@@ -111,12 +108,12 @@ namespace cine2 {
   }
 
 
-  std::ostream& stream_parameter(std::ostream& os, 
-                                 const Param& param, 
-                                 const char* prefix,
-                                 const char* postfix, 
-                                 const char* lb = "{", 
-                                 const char* rb = "}")
+  std::ostream& stream_parameter(std::ostream& os,
+    const Param& param,
+    const char* prefix,
+    const char* postfix,
+    const char* lb = "{",
+    const char* rb = "}")
   {
     stream(Gburnin);
     stream(G);
@@ -134,7 +131,6 @@ namespace cine2 {
     stream(prey.mutation_prob);
     stream(prey.mutation_step);
     stream(prey.noise_sigma);
-    //stream(prey.cmplx_penalty);
     stream_array(prey.input_layers);
     stream_array(prey.input_mask);
     os << '\n';
@@ -146,14 +142,12 @@ namespace cine2 {
     stream(pred.mutation_prob);
     stream(pred.mutation_step);
     stream(pred.noise_sigma);
-    //stream(pred.cmplx_penalty);
     stream_array(pred.input_layers);
     stream_array(pred.input_mask);
     os << '\n';
 
     stream(landscape.max_grass_cover);
-	stream(landscape.grass_growth);
-	stream(landscape.grass_deplete); //*&*
+    stream(landscape.grass_growth);
 
 
     return os;

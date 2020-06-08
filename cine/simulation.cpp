@@ -72,11 +72,10 @@ namespace cine2 {
 
 
     template <typename FITNESSFUN>
-    void assess_fitness(Population& population, 
-                        const Param::ind_param& iparam, 
-                        FITNESSFUN fitness_fun)
+    void assess_fitness(Population& population,
+      const Param::ind_param& iparam,
+      FITNESSFUN fitness_fun)
     {
-      //const float cmplx_penalty = iparam.cmplx_penalty;
       const auto& pop = population.pop;
       const auto& ann = population.ann;
       auto& fitness = population.fitness;
@@ -89,10 +88,10 @@ namespace cine2 {
     }
 
 
-    void create_new_generation(const Landscape& landscape, 
-                               Population& population,
-                               const Param::ind_param& iparam,
-                               bool fixed)
+    void create_new_generation(const Landscape& landscape,
+      Population& population,
+      const Param::ind_param& iparam,
+      bool fixed)
     {
       const auto& pop = population.pop;
       const auto& ann = *population.ann;
@@ -118,8 +117,8 @@ namespace cine2 {
       swap(population.ann, population.tmp_ann);
     }
 
-}
-  
+  }
+
 
 #define simulation_observer_notify(msg) \
   if ((observer ? !observer->notify(this, msg) : true)) return false
@@ -131,19 +130,19 @@ namespace cine2 {
     simulation_observer_notify(INITIALIZED);
     const int Gb = param_.Gburnin;
     for (int gb = 0; gb < Gb; ++gb) {
-	  simulation_observer_notify(NEW_GENERATION);
-	  const int Tb = param_.T;
+      simulation_observer_notify(NEW_GENERATION);
+      const int Tb = param_.T;
       for (int tb = 0; tb < Tb; ++tb) {
         simulate_timestep();
         simulation_observer_notify(WATCHDOG);   // app alive?
       }
-      
-	  //assess_fitness(); //CN: fix?
-	  // clear fitness
-	  prey_.fitness.assign(prey_.fitness.size(), 0.f);
-      pred_.fitness.assign(pred_.fitness.size(), 0.f); 
-	  //assess_fitness(); //CN: fix?
-	  create_new_generations();
+
+      //assess_fitness(); //CN: fix?
+      // clear fitness
+      prey_.fitness.assign(prey_.fitness.size(), 0.f);
+      pred_.fitness.assign(pred_.fitness.size(), 0.f);
+      //assess_fitness(); //CN: fix?
+      create_new_generations();
     }
     const int G = param_.G;
     for (g_ = 0; g_ < G; ++g_) {
@@ -152,7 +151,7 @@ namespace cine2 {
       for (t_ = 0; t_ < T; ++t_) {
         simulate_timestep();
         simulation_observer_notify(POST_TIMESTEP);
-		
+
       }
 
 
@@ -178,10 +177,10 @@ namespace cine2 {
     float* __restrict cover = landscape_[Layers::grass].data();
     ann_assume_aligned(cover, 32);
     const float max_grass_cover = param_.landscape.max_grass_cover;
-	const float grass_growth = param_.landscape.grass_growth;
+    const float grass_growth = param_.landscape.grass_growth;
 #   pragma omp parallel for schedule(static)
-    for (int i = 0; i < DD; ++i)  {
-      cover[i] = std::min(max_grass_cover, cover[i] + grass_growth); 
+    for (int i = 0; i < DD; ++i) {
+      cover[i] = std::min(max_grass_cover, cover[i] + grass_growth);
     }
 
     // move
@@ -218,7 +217,6 @@ namespace cine2 {
   void Simulation::resolve_grazing_and_attacks()
   {
     using Layers = Landscape::Layers;
-	const float grass_deplete = param_.landscape.grass_deplete;  //*&*
     LayerView prey_count = landscape_[Layers::prey_count];
     LayerView pred_count = landscape_[Layers::pred_count];
     LayerView grass = landscape_[Layers::grass];
@@ -250,16 +248,9 @@ namespace cine2 {
         if (pred_count(pos)) {
           attacked_prey_.push_back(prey);
         }
-//*&*        prey->food += old_grass(pos) / prey_count(pos); 
-		if (old_grass(pos) > grass_deplete * prey_count(pos)) { //*&* New if else statement to resolve grazing conflict
-			prey->food += grass_deplete;
-		}
-		else {
-			prey->food += old_grass(pos) / prey_count(pos);
-		}
-//*&*        grass(pos) = 0.f;  //   depleted
-		grass(pos) -= grass_deplete; //*&*
-		if (grass(pos) < 0.f) grass(pos) = 0.f; //*&*, necessary or resolved elsewhere?
+        prey->food += old_grass(pos) / prey_count(pos);
+        grass(pos) = 0.f;  //   depleted
+
       }
     }
 
@@ -287,7 +278,7 @@ namespace cine2 {
   }
 
 
-  class SimpleObserver: public Observer
+  class SimpleObserver : public Observer
   {
   public:
     SimpleObserver() {}
@@ -333,7 +324,7 @@ namespace cine2 {
     game_watches::Stopwatch watch_;
   };
 
-  
+
   std::unique_ptr<Observer> CreateSimpleObserver()
   {
     return std::unique_ptr<Observer>(new SimpleObserver());

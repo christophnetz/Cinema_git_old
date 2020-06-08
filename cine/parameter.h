@@ -22,7 +22,7 @@ namespace cine2 {
 
 
   using DumbAnn = Network<float,
-		Layer< Neuron<3, activation::zero>, 1>
+    Layer< Neuron<3, activation::zero>, 1>
   >;
 
 
@@ -33,20 +33,20 @@ namespace cine2 {
     Layer< Neuron<3, activation::identity>, 1>
   >;
 
-	using SimpleAnn = Network<float,
-		Layer< Neuron<3, default_activation>, 1>
-	>;
+  using SimpleAnn = Network<float,
+    Layer< Neuron<3, default_activation>, 1>
+  >;
 
 
-	using SimpleAnnFB = Network<float,
-		Layer< Neuron<3, default_activation, feedback::direct>, 1>
-	>;
+  using SimpleAnnFB = Network<float,
+    Layer< Neuron<3, default_activation, feedback::direct>, 1>
+  >;
 
 
-	using SmartAnn = Network<float,
-		Layer< Neuron<3, default_activation>, 3>,
-		Layer< Neuron<3, default_activation>, 1>
-	>;
+  using SmartAnn = Network<float,
+    Layer< Neuron<3, default_activation>, 3>,
+    Layer< Neuron<3, default_activation>, 1>
+  >;
 
 
   struct image_layer
@@ -77,12 +77,11 @@ namespace cine2 {
       float mutation_prob;
       float mutation_step;
       float noise_sigma;
-      //float cmplx_penalty;
 
       std::array<int, 3> input_layers;
       std::array<float, 3> input_mask;
     };
-    
+
     ind_param prey;
     ind_param pred;
 
@@ -99,15 +98,14 @@ namespace cine2 {
     struct
     {
       float max_grass_cover;
-	  float grass_growth;
-	  float grass_deplete; //*&*
+      float grass_growth;
       GaussFilter<3> prey_kernel;
       GaussFilter<3> pred_kernel;
     } landscape;
 
     struct
     {
-      std::deque<std::pair<int,int>> breakpoints{};
+      std::deque<std::pair<int, int>> breakpoints{};
       bool wait_for_close;
       std::array<bool, 3> selected;
     } gui;
@@ -122,12 +120,12 @@ namespace cine2 {
   cmd::cmd_line_parser config_file_parser(const std::string& config);
 
   // write as textfile
-  std::ostream& stream_parameter(std::ostream& os, 
-                                 const Param& param, 
-                                 const char* prefix, 
-                                 const char* postfix, 
-                                 const char* lb, 
-                                 const char* rb);
+  std::ostream& stream_parameter(std::ostream& os,
+    const Param& param,
+    const char* prefix,
+    const char* postfix,
+    const char* lb,
+    const char* rb);
 
 }
 
