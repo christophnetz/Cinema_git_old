@@ -124,11 +124,10 @@ namespace cine2 {
         simulation_observer_notify(WATCHDOG);   // app alive?
       }
 
-      //assess_fitness(); //CN: fix?
+   
       // clear fitness
       prey_.fitness.assign(prey_.fitness.size(), 0.f);
       pred_.fitness.assign(pred_.fitness.size(), 0.f);
-      //assess_fitness(); //CN: fix?
       create_new_generations();
     }
     const int G = param_.G;
@@ -261,7 +260,7 @@ namespace cine2 {
   void Simulation::init_layer(int dim)
   {
     if (landscape_.dim() == 0) {
-      landscape_ = Landscape(dim); //replace with dim parameter
+      landscape_ = Landscape(dim); 
     }
   }
 

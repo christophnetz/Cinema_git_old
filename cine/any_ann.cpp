@@ -170,7 +170,7 @@ namespace cine2 {
     if (0 == std::strcmp(ann_descr, "SimpleAnn_identitynf")) return make_any_ann_2<L, SimpleAnn_identitynf>(N);
     if (0 == std::strcmp(ann_descr, "SimpleAnnFB")) return make_any_ann_2<L, SimpleAnnFB>(N);
     if (0 == std::strcmp(ann_descr, "SmartAnn")) return make_any_ann_2<L, SmartAnn>(N);
-    // ToDo: add your Anns here
+    // Add other Anns here
     return nullptr;
   }
 
@@ -182,7 +182,7 @@ namespace cine2 {
     if (L == 7) return make_any_ann_1<7>(N, ann_descr);
     if (L == 33) return make_any_ann_1<33>(N, ann_descr);
 
-    // ToDo: add your Anns here
+    // Add Ann movement ranges here
     std::runtime_error("Unknown Ann type");
     return nullptr;
   }

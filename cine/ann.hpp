@@ -1,6 +1,6 @@
 // Feed forward neural networks
 //
-// Hanno 2016, 2017
+// Hanno Hildenbrandt 2016, 2017
 
 
 #ifndef ANN_HPP_INCLUDED

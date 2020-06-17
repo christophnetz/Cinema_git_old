@@ -42,7 +42,6 @@ namespace cinema {
       SELECTION_PREY,
       SELECTION_PRED,
       SELECTION_GRASS,
-      //SELECTION_RISK,
       MAX_SELECTION
     };
 
@@ -50,7 +49,6 @@ namespace cinema {
       LAYER_PREY,
       LAYER_PRED,
       LAYER_GRASS,
-      //LAYER_RISK,
       MAX_LAYER
     };
 
