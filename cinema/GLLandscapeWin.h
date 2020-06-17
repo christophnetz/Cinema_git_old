@@ -66,8 +66,8 @@ namespace cinema {
     void* pPos_;
     void* pFitness_;
     std::array<bool, SELECTION::MAX_SELECTION> selected_;
-    std::array<float, 4> org_layer_mask_;
-    std::array<float, 4> layer_mask_;
+    std::array<float, 3> org_layer_mask_;
+    std::array<float, 3> layer_mask_;
   };
 
 
