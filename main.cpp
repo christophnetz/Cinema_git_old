@@ -11,8 +11,8 @@
 using namespace cine2;
 
 
-static_assert(std::is_trivially_copyable<Individual>::value, 
-              "Folks, you've messed up the Individual class");
+static_assert(std::is_trivially_copyable<Individual>::value,
+  "Folks, you've messed up the Individual class");
 
 
 int main(int argc, const char** argv)
@@ -33,8 +33,8 @@ int main(int argc, const char** argv)
     }
     // create simulation host
     std::unique_ptr<SimulationHost> host;
-    host.reset(gui ? new cinema::AppWin() 
-                   : new SimulationHost()
+    host.reset(gui ? new cinema::AppWin()
+      : new SimulationHost()
     );
 
     // create observer chain
@@ -50,10 +50,10 @@ int main(int argc, const char** argv)
       std::cout << "\nRegards.\n";
     }
   }
-  catch (cmd::parse_error& err) {
+  catch (cmd::parse_error & err) {
     std::cerr << "\nParameter trouble: " << err.what() << '\n';
   }
-  catch (std::exception& err) {
+  catch (std::exception & err) {
     std::cerr << "\nExeption caught: " << err.what() << '\n';
   }
   catch (...) {

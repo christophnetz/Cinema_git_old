@@ -29,7 +29,7 @@ namespace cinema {
     // Win32 stuff
     BEGIN_MSG_MAP(GLAnnWin)
       CHAIN_MSG_MAP(GLWin);
-      MESSAGE_HANDLER(WM_CONTEXTMENU, OnContextMenu);
+    MESSAGE_HANDLER(WM_CONTEXTMENU, OnContextMenu);
     END_MSG_MAP()
 
 
@@ -39,7 +39,7 @@ namespace cinema {
 
   private:
     glm::dvec2 landscape_coor(int x, int y);
-    
+
     GLuint rectProg_;
     GLuint annTanhProg_;
     GLuint annLogP1Prog_;

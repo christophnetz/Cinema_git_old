@@ -52,8 +52,8 @@ public:
 
 private:
   float bin_lo(int i) const { return i / binsScale_ + x_min(); }
-  float x_min() const { return -binsOffs_/binsScale_; }
-  float x_max() const { return x_min() + binsScale_*(counts_.size()-1); }
+  float x_min() const { return -binsOffs_ / binsScale_; }
+  float x_max() const { return x_min() + binsScale_ * (counts_.size() - 1); }
 
   float binsScale_;
   float binsOffs_;
@@ -71,10 +71,10 @@ class histogram2D
 public:
   histogram2D();
   histogram2D(float x_min, float x_max, int x_bins,
-              float y_min, float y_max, int y_bins);
+    float y_min, float y_max, int y_bins);
   void reset();
   void reset(float x_min, float x_max, int x_bins,
-             float y_min, float y_max, int y_bins);
+    float y_min, float y_max, int y_bins);
 
   template<typename U>
   void operator()(U x_value, U y_value);
@@ -133,7 +133,7 @@ inline void histogram::reset()
 inline void histogram::reset(float x_min, float x_max, int bins)
 {
   binsScale_ = static_cast<float>(bins) / float(x_max - x_min);
-  binsOffs_ = - binsScale_ * float(x_min);
+  binsOffs_ = -binsScale_ * float(x_min);
   counts_.resize(bins);
   reset();
 }
@@ -146,7 +146,7 @@ inline void histogram::reduce(float factor)
 }
 
 
-inline void histogram::append(const histogram& h)
+inline void histogram::append(const histogram & h)
 {
   bool compatible = (num_bins() == h.num_bins()) && (binsScale_ == h.binsScale_) && (binsOffs_ == h.binsOffs_);
   if (!compatible)
@@ -159,9 +159,9 @@ inline void histogram::append(const histogram& h)
 }
 
 
-inline float histogram::max_count() const 
-{ 
-  const_iterator it = std::max_element(counts_.begin(), counts_.end()); 
+inline float histogram::max_count() const
+{
+  const_iterator it = std::max_element(counts_.begin(), counts_.end());
   return (it != counts_.end()) ? *it : 0;
 }
 
@@ -174,13 +174,13 @@ inline float histogram::quantile(float q) const
 }
 
 
-inline float histogram::quantile(float Q, const cdf_vect& cdf) const
+inline float histogram::quantile(float Q, const cdf_vect & cdf) const
 {
-  const size_t bins = cdf.size()-1; 
+  const size_t bins = cdf.size() - 1;
   if (0 == bins) return std::numeric_limits<float>::quiet_NaN();
   size_t i = 0;
-  while ((i<bins) && (cdf[i+1].y < Q)) { ++i; }
-  return detail::linp(cdf[i].x, cdf[i+1].x, cdf[i].y, cdf[i+1].y, Q);
+  while ((i < bins) && (cdf[i + 1].y < Q)) { ++i; }
+  return detail::linp(cdf[i].x, cdf[i + 1].x, cdf[i].y, cdf[i + 1].y, Q);
 }
 
 
@@ -192,26 +192,26 @@ inline histogram::quartiles_t histogram::quartiles() const
 }
 
 
-inline histogram::quartiles_t histogram::quartiles(const cdf_vect& cdf) const
+inline histogram::quartiles_t histogram::quartiles(const cdf_vect & cdf) const
 {
   return quartiles_t(quantile(0.25, cdf), quantile(0.50, cdf), quantile(0.75, cdf));
 }
 
 
-inline void histogram::CDF(cdf_vect& cdf) const
+inline void histogram::CDF(cdf_vect & cdf) const
 {
   cdf.clear();
   float scale = 1.0f / samples_;
   const unsigned n = num_bins();
   float cs = 0;
   unsigned i = 0;
-  for (; (i<n) && (counts_[i] < 10e-10f); ++i);
-  cdf.emplace_back( bin_lo(i-1), 0.0f );
-  for (; i<n; ++i)
+  for (; (i < n) && (counts_[i] < 10e-10f); ++i);
+  cdf.emplace_back(bin_lo(i - 1), 0.0f);
+  for (; i < n; ++i)
   {
     if (counts_[i] > 10e-100)
     {
-      cdf.emplace_back( bin_lo(i+1), scale * (cs += counts_[i]) );
+      cdf.emplace_back(bin_lo(i + 1), scale * (cs += counts_[i]));
     }
   }
 }
@@ -221,12 +221,12 @@ template<typename U>
 inline void histogram::operator()(U value)
 {
   float dval(value);
-//  if (! glmutils::any_nan(dval))
+  //  if (! glmutils::any_nan(dval))
   {
     ++samples_;
-    int bin = static_cast<int>( binsScale_ * dval + binsOffs_ );
+    int bin = static_cast<int>(binsScale_ * dval + binsOffs_);
     // clamp bin to [0,maxBin]
-    ++counts_[std::max(std::min(bin, static_cast<int>(num_bins())-1), 0)];
+    ++counts_[std::max(std::min(bin, static_cast<int>(num_bins()) - 1), 0)];
   }
 }
 
@@ -235,20 +235,20 @@ template<typename U>
 inline void histogram::operator()(U value, int times)
 {
   float dval(value);
-//  if (! glmutils::any_nan(dval))
+  //  if (! glmutils::any_nan(dval))
   {
     samples_ += times;
-    int bin = static_cast<int>( binsScale_ * dval + binsOffs_ );
+    int bin = static_cast<int>(binsScale_ * dval + binsOffs_);
     // clamp bin to [0,maxBin]
-    counts_[std::max(std::min(bin, static_cast<int>(num_bins())-1), 0)] += times;
+    counts_[std::max(std::min(bin, static_cast<int>(num_bins()) - 1), 0)] += times;
   }
 }
 
 
-inline glm::vec2 histogram::operator[](size_t i) const 
-{ 
-  assert(i < counts_.size()); 
-  return glm::vec2(bin_lo(static_cast<int>(i)), counts_[i]); 
+inline glm::vec2 histogram::operator[](size_t i) const
+{
+  assert(i < counts_.size());
+  return glm::vec2(bin_lo(static_cast<int>(i)), counts_[i]);
 }
 
 
@@ -256,12 +256,12 @@ template<typename U>
 inline void histogram2D::operator()(U x_value, U y_value)
 {
   float dxval(x_value);
-//  if (! glmutils::any_nan(dxval))
+  //  if (! glmutils::any_nan(dxval))
   {
     ++count_;
-    int bin = static_cast<int>( binsScale_ * float(dxval) + binsOffs_ );
+    int bin = static_cast<int>(binsScale_ * float(dxval) + binsOffs_);
     // clamp bin to [0,maxBin]
-    hists_[std::max(std::min(bin, static_cast<int>(size())-1), 0)](y_value);
+    hists_[std::max(std::min(bin, static_cast<int>(size()) - 1), 0)](y_value);
   }
 }
 
@@ -269,23 +269,23 @@ template<typename U>
 inline void histogram2D::operator()(U x_value, U y_value, int times)
 {
   float dxval(x_value);
-//  if (! glmutils::any_nan(dxval))
+  //  if (! glmutils::any_nan(dxval))
   {
     count_ += times;
-    int bin = static_cast<int>( binsScale_ * float(dxval) + binsOffs_ );
+    int bin = static_cast<int>(binsScale_ * float(dxval) + binsOffs_);
     // clamp bin to [0,maxBin]
-    hists_[std::max(std::min(bin, static_cast<int>(size())-1), 0)](y_value, times);
+    hists_[std::max(std::min(bin, static_cast<int>(size()) - 1), 0)](y_value, times);
   }
 }
 
 
-inline histogram2D::histogram2D() 
+inline histogram2D::histogram2D()
 {
 }
 
 
 inline histogram2D::histogram2D(float x_min, float x_max, int x_bins,
-                                float y_min, float y_max, int y_bins)
+  float y_min, float y_max, int y_bins)
 {
   reset(x_min, x_max, x_bins, y_min, y_max, y_bins);
 }
@@ -294,7 +294,7 @@ inline histogram2D::histogram2D(float x_min, float x_max, int x_bins,
 inline void histogram2D::reset()
 {
   count_ = 0;
-  for (size_t i=0; i<hists_.size(); ++i)
+  for (size_t i = 0; i < hists_.size(); ++i)
   {
     hists_[i].reset();
   }
@@ -302,15 +302,15 @@ inline void histogram2D::reset()
 
 
 inline void histogram2D::reset(float x_min, float x_max, int x_bins,
-                               float y_min, float y_max, int y_bins)
+  float y_min, float y_max, int y_bins)
 {
   binsScale_ = static_cast<float>(x_bins) / float(x_max - x_min);
-  binsOffs_ = - binsScale_ * float(x_min);
+  binsOffs_ = -binsScale_ * float(x_min);
   count_ = 0;
   hists_.clear();
-  for (int i=0; i<x_bins; ++i)
+  for (int i = 0; i < x_bins; ++i)
   {
-    hists_.emplace_back( y_min, y_max, y_bins );
+    hists_.emplace_back(y_min, y_max, y_bins);
   }
 }
 

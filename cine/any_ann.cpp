@@ -7,16 +7,16 @@ namespace cine2 {
 
 
   any_ann::any_ann(int N, int state_size, int size)
-  : N_(N), 
-    state_size_(state_size), 
-    size_(size), 
+    : N_(N),
+    state_size_(state_size),
+    size_(size),
     state_(nullptr)
   {
     state_ = (float*)_mm_malloc(N_ * size_ * sizeof(float), 16);
     std::memset(state_, 0, N_ * size_ * sizeof(float));
   }
 
-  
+
   any_ann::~any_ann()
   {
     _mm_free(state_);
@@ -28,7 +28,7 @@ namespace cine2 {
     struct mutate
     {
       mutate(const Param::ind_param& iparam, bool Fixed)
-      : mdist(iparam.mutation_prob),
+        : mdist(iparam.mutation_prob),
         sdist(0.0f, iparam.mutation_step),
         fixed(Fixed)
       {
@@ -92,12 +92,12 @@ namespace cine2 {
     }
 
 
-    void move(const Landscape& landscape,
-              std::vector<Individual>& pop,
-              const Param::ind_param& iparam) override
+    void move(const Landscape & landscape,
+      std::vector<Individual> & pop,
+      const Param::ind_param & iparam) override
     {
       using Layers = Landscape::Layers;
-      using env_info_t = std::array<float, L*L>;
+      using env_info_t = std::array<float, L* L>;
 
       struct zip_eval_cell {
         float eval;
@@ -107,7 +107,7 @@ namespace cine2 {
       ANN* __restrict pann = reinterpret_cast<ANN*>(state_);
       const int N = static_cast<int>(iparam.N);
       const auto noise = std::uniform_real_distribution<float>(1.0f - iparam.noise_sigma, 1.0f + iparam.noise_sigma);
-  #   pragma omp parallel for schedule(static,128)
+#   pragma omp parallel for schedule(static,128)
       for (int p = 0; p < N; ++p) {
         if (pop[p].alive()) {
           // gather information from landscape
@@ -118,10 +118,10 @@ namespace cine2 {
           }
 
           // reflect about the possible cells
-          float best_eval = - std::numeric_limits<float>::max();
+          float best_eval = -std::numeric_limits<float>::max();
           typename ANN::input_t input;
-          std::array<zip_eval_cell, L*L> zip;
-          for (int i = 0; i < L*L; ++i) {
+          std::array<zip_eval_cell, L* L> zip;
+          for (int i = 0; i < L * L; ++i) {
             for (int j = 0; j < ANN::input_size; ++j) {
               input[j] = iparam.input_mask[j] * noise(rnd::reng) * env_input[j][i];
             }
@@ -130,23 +130,23 @@ namespace cine2 {
             zip[i] = { eval, i };
           }
           // resolve ambiguities. bring 'best' ones to the front
-          auto it = std::partition(zip.begin(), zip.end(), [=](const auto& a){ return a.eval == best_eval; }) - 1;
+          auto it = std::partition(zip.begin(), zip.end(), [=](const auto & a) { return a.eval == best_eval; }) - 1;
           if (it != zip.begin()) {
             // yep, more than one 'best' alternatives, select one at random
             it = zip.begin() + rndutils::uniform_signed_distribution<int>(0, static_cast<int>(std::distance(zip.begin(), it)))(rnd::reng);
           }
-          pop[p].pos = landscape.wrap(pos + Coordinate{short((it->cell % L) - L/2), short((it->cell / L) - L/2)});
+          pop[p].pos = landscape.wrap(pos + Coordinate{ short((it->cell % L) - L / 2), short((it->cell / L) - L / 2) });
         }
       }
     }
 
 
-    void mutate(const Param::ind_param& iparam, bool fixed) override
+    void mutate(const Param::ind_param & iparam, bool fixed) override
     {
       ANN* __restrict pann = reinterpret_cast<ANN*>(state_);
       const int N = static_cast<int>(iparam.N);
       const ann_visitors::mutate mutate_visitor(iparam, fixed);
-  #   pragma omp parallel for schedule(static, 128)
+#   pragma omp parallel for schedule(static, 128)
       for (int i = 0; i < N; ++i) {
         ann::visit_neurons(pann[i], mutate_visitor);
       }
@@ -158,10 +158,10 @@ namespace cine2 {
   template <int L, typename ANN>
   std::unique_ptr<any_ann> make_any_ann_2(int N)
   {
-    return std::unique_ptr<any_ann>( new concrete_ann<L, ANN>(N) );
+    return std::unique_ptr<any_ann>(new concrete_ann<L, ANN>(N));
   }
 
-    
+
   template <int L>
   std::unique_ptr<any_ann> make_any_ann_1(int N, const char* ann_descr)
   {
@@ -180,12 +180,12 @@ namespace cine2 {
     if (L == 3) return  make_any_ann_1<3>(N, ann_descr);
     if (L == 5) return make_any_ann_1<5>(N, ann_descr);
     if (L == 7) return make_any_ann_1<7>(N, ann_descr);
-	if (L == 33) return make_any_ann_1<33>(N, ann_descr);
+    if (L == 33) return make_any_ann_1<33>(N, ann_descr);
 
     // ToDo: add your Anns here
     std::runtime_error("Unknown Ann type");
     return nullptr;
   }
-  
+
 
 }

@@ -45,27 +45,27 @@ namespace glsl {
   }
 
 
-  glm::dmat3 Camera::R() const 
-  { 
-    return glm::dmat3(forward(), up(), side()); 
+  glm::dmat3 Camera::R() const
+  {
+    return glm::dmat3(forward(), up(), side());
   }
 
 
-  const glm::dmat4& Camera::V() const 
-  { 
-    return V_; 
+  const glm::dmat4& Camera::V() const
+  {
+    return V_;
   }
 
 
-  const glm::dmat4& Camera::P() const 
-  { 
-    return P_; 
+  const glm::dmat4& Camera::P() const
+  {
+    return P_;
   }
 
 
-  const glm::dvec4& Camera::viewport() const 
-  { 
-    return viewport_; 
+  const glm::dvec4& Camera::viewport() const
+  {
+    return viewport_;
   }
 
 
@@ -141,7 +141,7 @@ namespace glsl {
   }
 
 
-  void CameraManip::transform(const glm::dmat4& R)
+  void CameraManip::transform(const glm::dmat4 & R)
   {
     eye_ = center_ - dvec3(R * dvec4(center_ - eye_, 1.0));
     up_ = dvec3(R * dvec4(up_, 1.0));
@@ -161,7 +161,7 @@ namespace glsl {
   }
 
 
-  void CameraManip::update(Camera& camera, double deltaT)
+  void CameraManip::update(Camera & camera, double deltaT)
   {
     regenerateUp();
     deltaT = clamp(smooth_ * deltaT, 0.0, 1.0);

@@ -6,7 +6,7 @@
 
 
 #if defined (_MSC_VER)
-  #pragma comment(lib, "opengl32.lib")
+#pragma comment(lib, "opengl32.lib")
 #endif
 
 

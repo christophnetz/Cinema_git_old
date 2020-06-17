@@ -8,10 +8,10 @@ namespace glsl
 {
 
   // aux function to translate source to string
-  const char*  getStringForSource(GLenum source) 
+  const char* getStringForSource(GLenum source)
   {
-    switch(source) {
-    case GL_DEBUG_SOURCE_API: 
+    switch (source) {
+    case GL_DEBUG_SOURCE_API:
       return "API";
     case GL_DEBUG_SOURCE_WINDOW_SYSTEM:
       return "Window System";
@@ -29,10 +29,10 @@ namespace glsl
   }
 
   // aux function to translate severity to string
-  const char*  getStringForSeverity(GLenum severity) 
+  const char* getStringForSeverity(GLenum severity)
   {
-    switch(severity) {
-    case GL_DEBUG_SEVERITY_HIGH: 
+    switch (severity) {
+    case GL_DEBUG_SEVERITY_HIGH:
       return "High";
     case GL_DEBUG_SEVERITY_MEDIUM:
       return "Medium";
@@ -44,10 +44,10 @@ namespace glsl
   }
 
   // aux function to translate type to string
-  const char* getStringForType(GLenum type) 
+  const char* getStringForType(GLenum type)
   {
-    switch(type) {
-    case GL_DEBUG_TYPE_ERROR: 
+    switch (type) {
+    case GL_DEBUG_TYPE_ERROR:
       return "Error";
     case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR:
       return "Deprecated Behaviour";
@@ -74,22 +74,22 @@ namespace glsl
 
 
   void __stdcall GLDebugLogStdErr(GLenum source, GLenum type, GLuint id, GLenum severity,
-                                  GLsizei length, const GLchar* message, const GLvoid*)
+    GLsizei length, const GLchar* message, const GLvoid*)
   {
     std::lock_guard<std::mutex> _(mutex);
-    std::fprintf(stderr, "\nOpenGL log (%d):  Source: %s  Severity: %s\n%s\n", 
-                 id, getStringForSource(source), getStringForSeverity(severity), message);
+    std::fprintf(stderr, "\nOpenGL log (%d):  Source: %s  Severity: %s\n%s\n",
+      id, getStringForSource(source), getStringForSeverity(severity), message);
   }
 
 
   void __stdcall GLDebugLogOnceStdErr(GLenum source, GLenum type, GLuint id, GLenum severity,
-                                      GLsizei length, const GLchar* message, const GLvoid*)
+    GLsizei length, const GLchar* message, const GLvoid*)
   {
     std::lock_guard<std::mutex> _(mutex);
     auto ip = msg_set.insert(message);
     if (ip.second) {
-      std::fprintf(stderr, "\nOpenGL log (%d):  Source: %s  Severity: %s\n%s\n", 
-                   id, getStringForSource(source), getStringForSeverity(severity), message);
+      std::fprintf(stderr, "\nOpenGL log (%d):  Source: %s  Severity: %s\n%s\n",
+        id, getStringForSource(source), getStringForSeverity(severity), message);
     }
   }
 

@@ -27,7 +27,7 @@ namespace cine2 {
   inline bool operator==(Coordinate a, Coordinate b) { return a.packed == b.packed; }
   inline bool operator!=(Coordinate a, Coordinate b) { return a.packed != b.packed; }
   inline Coordinate operator+(Coordinate a, Coordinate b) { return Coordinate(a.x + b.x, a.y + b.y); }
-  inline Coordinate operator+=(Coordinate& a, Coordinate b) { a.x += b.x; a.y += b.y; return a; }
+  inline Coordinate operator+=(Coordinate & a, Coordinate b) { a.x += b.x; a.y += b.y; return a; }
 
 
   /// \brief  A View into an landscape layer.
@@ -46,18 +46,18 @@ namespace cine2 {
 
     void clear() { std::memset(data_, 0, mem_size()); }
 
-    float operator()(Coordinate coor) const 
-    { 
+    float operator()(Coordinate coor) const
+    {
       ann_assume_aligned(data_, 32);
       const int mask = dim_ - 1;
-      return data_[dim_ * (coor.y & mask) + (coor.x & mask)]; 
+      return data_[dim_ * (coor.y & mask) + (coor.x & mask)];
     }
-  
+
     float& operator()(Coordinate coor)
-    { 
+    {
       ann_assume_aligned(data_, 32);
       const int mask = dim_ - 1;
-      return data_[dim_ * (coor.y & mask) + (coor.x & mask)]; 
+      return data_[dim_ * (coor.y & mask) + (coor.x & mask)];
     }
 
 
@@ -66,11 +66,11 @@ namespace cine2 {
     /// \tparam L   The side length of the square
     /// \param  center  The center.
     template <int L>
-    std::array<float, L*L> gather(Coordinate center) const
+    std::array<float, L* L> gather(Coordinate center) const
     {
-      std::array<float, L*L> res;
-      for (int i = 0; i < L*L; ++i) {
-        res[i] = this->operator()(center + Coordinate((i % L) - L/2, (i / L) - L/2));
+      std::array<float, L* L> res;
+      for (int i = 0; i < L * L; ++i) {
+        res[i] = this->operator()(center + Coordinate((i % L) - L / 2, (i / L) - L / 2));
       }
       return res;
     }
@@ -80,10 +80,10 @@ namespace cine2 {
     /// \tparam L   The side length of the square
     /// \param  center  The center.
     template <int L>
-    void stamp_kernel(Coordinate center, const std::array<float, L*L>& kernel)
+    void stamp_kernel(Coordinate center, const std::array<float, L * L> & kernel)
     {
-      for (int i = 0; i < L*L; ++i) {
-        this->operator()(center + Coordinate((i % L) - L/2, (i / L) - L/2)) += kernel[i];
+      for (int i = 0; i < L * L; ++i) {
+        this->operator()(center + Coordinate((i % L) - L / 2, (i / L) - L / 2)) += kernel[i];
       }
     }
 
@@ -94,7 +94,7 @@ namespace cine2 {
     const float* data() const { return data_; }
     float* data() { return data_; }
 
-    void copy(const LayerView& src) {
+    void copy(const LayerView & src) {
       assert(dim_ == src.dim_);
       std::memcpy(data_, src.data_, mem_size());
     }
@@ -157,18 +157,18 @@ namespace cine2 {
       std::memset(data_, 0, mem_size());
     }
 
-    Landscape(const Landscape& rhs) : Landscape(rhs.dim_)
+    Landscape(const Landscape & rhs) : Landscape(rhs.dim_)
     {
       std::memcpy(data_, rhs.data_, mem_size());
     }
-    
-    Landscape& operator=(const Landscape& rhs)
+
+    Landscape& operator=(const Landscape & rhs)
     {
       Landscape tmp(rhs);
       *this = std::move(tmp);
       return *this;
     }
-  
+
     /// \brief  Destructor.
     ~Landscape()
     {
@@ -179,7 +179,7 @@ namespace cine2 {
     int dim() const { return dim_; }
 
     /// \return the total size of all layers in memory [bytes].
-    int mem_size() const { return Layers::max_layer * dim_ * dim_ * sizeof(float); }
+    int mem_size() const { return Layers::max_layer* dim_* dim_ * sizeof(float); }
 
     /// \return the size of a layers in memory [bytes].
     int layer_mem_size() const { return dim_ * dim_ * sizeof(float); }
@@ -193,8 +193,8 @@ namespace cine2 {
 
     /// \return LayerView of the indexed value.
     LayerView get_layer(Layers layer) { return LayerView(data_ + layer * dim_ * dim_, dim_); }
-  
-  
+
+
     /// \return LayerView of the indexed value.
     const LayerView get_layer(Layers layer) const { return LayerView(data_ + layer * dim_ * dim_, dim_); }
 
@@ -210,7 +210,7 @@ namespace cine2 {
     const LayerView operator[](Layers layer) const { return get_layer(layer); }
 
     template <typename IT, typename Kernel>
-    void update_occupancy(Layers count, Layers conv, IT first, IT last, const Kernel& kernel)
+    void update_occupancy(Layers count, Layers conv, IT first, IT last, const Kernel & kernel)
     {
       LayerView vCount = get_layer(count);
       LayerView vConv = get_layer(conv);

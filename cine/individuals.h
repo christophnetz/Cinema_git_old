@@ -15,7 +15,7 @@ namespace cine2 {
 
   struct Individual
   {
-    Individual() : pos(0,0), food(0), ancestor(0)
+    Individual() : pos(0, 0), food(0), ancestor(0)
     {
     }
 
@@ -25,15 +25,15 @@ namespace cine2 {
       food = 0.f;
       ancestor = ancestor_idx;
     }
-    
+
     bool alive() const { return food >= 0.f; }
     void die() { food = -1.f; }
 
     Coordinate pos;
-    float food;       
+    float food;
     int ancestor;
   };
-  
+
 
 }
 

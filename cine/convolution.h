@@ -14,8 +14,8 @@ namespace cine2 {
   {
     static_assert(KernelSize & 1, "Kernel size shall be odd");
     static const int k = KernelSize;
-    
-    static void normalize(std::array<float, KernelSize * KernelSize>& K)
+
+    static void normalize(std::array<float, KernelSize* KernelSize>& K)
     {
       auto sum = std::accumulate(K.cbegin(), K.cend(), 0.0f);
       for (auto& x : K) x /= sum;
@@ -33,7 +33,7 @@ namespace cine2 {
     }
 
     float maxK() const { return K[KernelSize / 2]; }
-    std::array<float, KernelSize * KernelSize> K;
+    std::array<float, KernelSize* KernelSize> K;
   };
 
 
@@ -43,12 +43,12 @@ namespace cine2 {
     GaussFilter()
     {
       const int radius = KernelSize >> 1;
-      for (int i=0; i <= radius; ++i) {
+      for (int i = 0; i <= radius; ++i) {
         K[i] = std::exp(-0.5f * (i * i));
       }
       int s = 0;
-      for (int x=-radius; x <= radius; ++x) {
-        for (int y=-radius; y <= radius; ++y) {
+      for (int x = -radius; x <= radius; ++x) {
+        for (int y = -radius; y <= radius; ++y) {
           K[s++] = std::exp(-0.5f * ((x * x) + (y * y)));
         }
       }
@@ -56,7 +56,7 @@ namespace cine2 {
     }
 
     float maxK() const { return K[KernelSize / 2]; }
-    std::array<float, KernelSize * KernelSize> K;
+    std::array<float, KernelSize* KernelSize> K;
   };
 
 

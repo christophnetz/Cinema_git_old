@@ -31,7 +31,7 @@ namespace cinema {
     // Win32 stuff
     BEGIN_MSG_MAP(GLTimeLineWin)
       CHAIN_MSG_MAP(GLWin);
-      MESSAGE_HANDLER(WM_CONTEXTMENU, OnContextMenu);
+    MESSAGE_HANDLER(WM_CONTEXTMENU, OnContextMenu);
     END_MSG_MAP()
 
 
@@ -45,8 +45,8 @@ namespace cinema {
     void render_timeline(int idx);
     glm::dvec2 plot_coor(int x, int y);
     void snap_camera();
-    
-    static const std::array<const char*, 5+1> title_;
+
+    static const std::array<const char*, 5 + 1> title_;
     static const std::array<glm::vec4, NT> color_;
 
     int G_, g_;

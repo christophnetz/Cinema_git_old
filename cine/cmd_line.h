@@ -26,12 +26,12 @@ namespace cmd {
   class parse_error
   {
   public:
-    parse_error(const std::string& msg) : msg_(msg) 
+    parse_error(const std::string& msg) : msg_(msg)
     {
     }
     const char* what() const { return msg_.c_str(); }
 
-  private: 
+  private:
     std::string msg_;
   };
 
@@ -65,7 +65,7 @@ namespace cmd {
           continue;
         }
         arg += chr;
-      } 
+      }
       if (chr != val.rb_) throw parse_error(std::string("'") + val.rb_ + "' expected");
       return is;
     }
@@ -83,7 +83,7 @@ namespace cmd {
     //! ctor main() interface
     cmd_line_parser(int argc, const char** argv)
     {
-      for (int i=0; i<argc; ++i) argv_.emplace_back(argv[i]);
+      for (int i = 0; i < argc; ++i) argv_.emplace_back(argv[i]);
     }
 
 
@@ -101,14 +101,14 @@ namespace cmd {
         while (!delim(*p0))
         {
           if (*p0 == '\0') break;
-          if (*p0 == '\"') 
+          if (*p0 == '\"')
           {
-            p0++; 
+            p0++;
             delim = [](char chr) { return chr == '\"'; };
           }
-          if (*p0 == '#') 
+          if (*p0 == '#')
           {
-            while (*p0 && *p0 != '\n') ++p0; 
+            while (*p0 && *p0 != '\n') ++p0;
           }
           else
           {
@@ -123,17 +123,17 @@ namespace cmd {
 
 
     //! ctor single white-space delimited string
-    explicit cmd_line_parser(const std::string& cmdline) : cmd_line_parser(cmdline.c_str())
+    explicit cmd_line_parser(const std::string & cmdline) : cmd_line_parser(cmdline.c_str())
     {}
 
 
     //! ctor single white-space delimited string
-    explicit cmd_line_parser(std::vector<std::string>& argv) : argv_(std::move(argv))
+    explicit cmd_line_parser(std::vector<std::string> & argv) : argv_(std::move(argv))
     {}
 
 
     //! adds the entries from the second clp
-    cmd_line_parser& append(const cmd_line_parser& rhs)
+    cmd_line_parser& append(const cmd_line_parser & rhs)
     {
       argv_.insert(argv_.end(), rhs.argv_.cbegin(), rhs.argv_.cend());
       return *this;
@@ -155,7 +155,7 @@ namespace cmd {
     //! \p val contains the parsed value on success, otherwise
     //! its unchanged.
     template <typename T>
-    bool optional(const char* name, T& val, char delim = '=') const;
+    bool optional(const char* name, T & val, char delim = '=') const;
 
 
     //! \brief Parse name value pair
@@ -180,7 +180,7 @@ namespace cmd {
 
 
     template <typename C>
-    bool optional_vec(const char* name, C& val, char delim = '=') const;
+    bool optional_vec(const char* name, C & val, char delim = '=') const;
 
 
     //! \brief Checks for unwanted arguments
@@ -194,8 +194,8 @@ namespace cmd {
 
   private:
     std::vector<std::string> argv_;
-    mutable std::set<std::pair<std::string, char>> memoized_;
-    void memoize(const char* name, char delim) const;
+    mutable std::set<std::pair<std::string, char>> memorized_;
+    void memorize(const char* name, char delim) const;
   };
 
 
@@ -207,12 +207,12 @@ namespace cmd {
     {
       return{ "", "" };
     }
-    return{{carg, s}, {s + 1}};
+    return{ {carg, s}, {s + 1} };
   }
 
 
   template <typename T>
-  inline void convert_arg(std::pair<std::string, std::string> const& arg, T& x)
+  inline void convert_arg(std::pair<std::string, std::string> const& arg, T & x)
   {
     std::istringstream iss(arg.second);
     if (!(iss >> x))
@@ -222,9 +222,9 @@ namespace cmd {
   }
 
 
-  inline void parse_cmd_flag(const char* name, bool& val, const std::vector<std::string>& argv)
+  inline void parse_cmd_flag(const char* name, bool& val, const std::vector<std::string> & argv)
   {
-    for (const auto& arg : argv) 
+    for (const auto& arg : argv)
     {
       if (0 == strcmp(arg.c_str(), name)) { val = true; return; }
     }
@@ -232,9 +232,9 @@ namespace cmd {
 
 
   template <typename T>
-  inline bool parse_optional_arg(const char* name, T& val, const std::vector<std::string>& argv, char delim = '=')
+  inline bool parse_optional_arg(const char* name, T & val, const std::vector<std::string> & argv, char delim = '=')
   {
-    for (const auto& arg : argv) 
+    for (const auto& arg : argv)
     {
       auto sarg = split_arg(arg.c_str(), delim);
       if (sarg.first == name) { convert_arg(sarg, val); return true; }
@@ -244,9 +244,9 @@ namespace cmd {
 
 
   template <typename T>
-  inline void parse_required_arg(const char* name, T& val, const std::vector<std::string>& argv, char delim = '=')
+  inline void parse_required_arg(const char* name, T & val, const std::vector<std::string> & argv, char delim = '=')
   {
-    for (const auto& arg : argv) 
+    for (const auto& arg : argv)
     {
       auto sarg = split_arg(arg.c_str(), delim);
       if (sarg.first == name) { convert_arg(sarg, val); return; }
@@ -257,7 +257,7 @@ namespace cmd {
 
   inline bool cmd_line_parser::flag(const char* name) const
   {
-    memoize(name, 0);
+    memorize(name, 0);
     bool flag = false;
     parse_cmd_flag(name, flag, argv_);
     return flag;
@@ -265,9 +265,9 @@ namespace cmd {
 
 
   template <typename T>
-  inline bool cmd_line_parser::optional(const char* name, T& val, char delim) const
+  inline bool cmd_line_parser::optional(const char* name, T & val, char delim) const
   {
-    memoize(name,delim);
+    memorize(name, delim);
     return parse_optional_arg(name, val, argv_, delim);
   }
 
@@ -275,7 +275,7 @@ namespace cmd {
   template <typename T>
   inline T cmd_line_parser::optional_val(const char* name, T val, char delim) const
   {
-    memoize(name,delim);
+    memorize(name, delim);
     T nVal = val;
     return parse_optional_arg(name, nVal, argv_, delim) ? nVal : val;
   }
@@ -284,7 +284,7 @@ namespace cmd {
   template <typename T>
   inline T cmd_line_parser::required(const char* name, char delim) const
   {
-    memoize(name,delim);
+    memorize(name, delim);
     T val;
     parse_required_arg(name, val, argv_, delim);
     return val;
@@ -292,7 +292,7 @@ namespace cmd {
 
 
   template <typename C>
-  inline bool cmd_line_parser::optional_vec(const char* name, C& val, char delim) const
+  inline bool cmd_line_parser::optional_vec(const char* name, C & val, char delim) const
   {
     parse_vector<typename C::value_type> tmp;
     if (optional(name, tmp, delim)) {
@@ -306,10 +306,10 @@ namespace cmd {
   inline std::vector<std::string> cmd_line_parser::unrecognized() const
   {
     std::vector<std::string> tmp;
-    for (size_t i=1; i<argv_.size(); ++i) 
+    for (size_t i = 1; i < argv_.size(); ++i)
     {
       bool known = false;
-      for (const auto& a : memoized_) 
+      for (const auto& a : memorized_)
       {
         auto sarg = split_arg(argv_[i].c_str(), a.second);
         if (sarg.first == a.first)
@@ -328,7 +328,7 @@ namespace cmd {
   inline std::string cmd_line_parser::argv() const
   {
     std::string res;
-    for (size_t i=1; i<argv_.size(); ++i)
+    for (size_t i = 1; i < argv_.size(); ++i)
     {
       res += argv_[i];
       res += ' ';
@@ -337,9 +337,9 @@ namespace cmd {
   }
 
 
-  inline void cmd_line_parser::memoize(const char* name, char delim) const
+  inline void cmd_line_parser::memorize(const char* name, char delim) const
   {
-    memoized_.emplace(name, delim);
+    memorized_.emplace(name, delim);
   }
 
 

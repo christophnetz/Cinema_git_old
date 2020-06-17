@@ -20,7 +20,7 @@ namespace glsl {
     const glm::dmat4& V() const;    // View matrix
     const glm::dmat4& P() const;    // Perspective matrix
     const glm::dvec4& viewport() const;
-  
+
     void setOrthoViewport(const glm::ivec4& viewport, const glm::dvec4& world);
     void setViewport(int w, int h, double fovy, double clipNear, double clipFar);
     void setViewMatrix(const glm::dmat4& V);

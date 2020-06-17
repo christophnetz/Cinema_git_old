@@ -6,7 +6,7 @@
 //! \file wgl_context.hpp WGL context creation
 
 #ifndef _WIN32 
-  #error wgl not supported
+#error wgl not supported
 #endif
 
 #ifndef GLSL_WGL_CONTEXT_HPP_INCLUDED
@@ -47,7 +47,7 @@ namespace glsl {
     ::HDC hDC_;       // Creators HDC
     ::HGLRC hGLRC_;
   };
-  
+
 
   class ContextGuard
   {

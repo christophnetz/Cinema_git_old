@@ -40,7 +40,7 @@ namespace cine2 {
     const float* operator[](int idx) const { return (const float*)((const char*)state_ + idx * size_); }
 
     // assign single ann
-    void assign(const any_ann& src, int src_idx, int dst_idx)
+    void assign(const any_ann & src, int src_idx, int dst_idx)
     {
       std::memcpy(this->operator[](dst_idx), src[src_idx], size_);
     }
@@ -50,8 +50,8 @@ namespace cine2 {
 
     // Returns complexity of ann idx: 1 - (zero / weights)
     virtual float complexity(int idx) const = 0;
-    virtual void move(const Landscape& landscape, std::vector<Individual>& pop, const Param::ind_param& iparam) = 0;
-    virtual void mutate(const Param::ind_param& iparam, bool fixed) = 0;
+    virtual void move(const Landscape & landscape, std::vector<Individual> & pop, const Param::ind_param & iparam) = 0;
+    virtual void mutate(const Param::ind_param & iparam, bool fixed) = 0;
 
   protected:
     int N_;

@@ -13,7 +13,7 @@ namespace cinema {
   class GLLandscapeWin :
     public GLWin
   {
-  public:  
+  public:
     GLLandscapeWin(GLSimState*);
     ~GLLandscapeWin() override;
 
@@ -27,7 +27,7 @@ namespace cinema {
     // Win32 stuff
     BEGIN_MSG_MAP(GLLandscapeWin)
       CHAIN_MSG_MAP(GLWin);
-      MESSAGE_HANDLER_SYNC(WM_CONTEXTMENU, OnContextMenu);
+    MESSAGE_HANDLER_SYNC(WM_CONTEXTMENU, OnContextMenu);
     END_MSG_MAP()
 
 
@@ -37,7 +37,7 @@ namespace cinema {
 
   private:
     glm::dvec2 landscape_coor(int x, int y);
-    
+
     enum SELECTION {
       SELECTION_PREY,
       SELECTION_PRED,

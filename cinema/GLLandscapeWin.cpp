@@ -7,8 +7,8 @@
 namespace cinema {
 
 
-  GLLandscapeWin::GLLandscapeWin(GLSimState* sim_state) 
-  : GLWin(sim_state),
+  GLLandscapeWin::GLLandscapeWin(GLSimState* sim_state)
+    : GLWin(sim_state),
     zoom_(1.0),
     landscaleProg_(GL_NONE),
     cameraManip_(1000.0),
@@ -20,8 +20,8 @@ namespace cinema {
     selected_.fill(false);
   }
 
-  
-  GLLandscapeWin::~GLLandscapeWin() 
+
+  GLLandscapeWin::~GLLandscapeWin()
   {
   }
 
@@ -30,11 +30,11 @@ namespace cinema {
   {
     using Msg = cine2::Simulation::msg_type;
     switch (msg) {
-      case Msg::INITIALIZED:
-      case Msg::NEW_GENERATION:
-      case Msg::POST_TIMESTEP:
-        ::InvalidateRect(m_hWnd, NULL, TRUE);
-        break;
+    case Msg::INITIALIZED:
+    case Msg::NEW_GENERATION:
+    case Msg::POST_TIMESTEP:
+      ::InvalidateRect(m_hWnd, NULL, TRUE);
+      break;
     }
   }
 
@@ -44,15 +44,15 @@ namespace cinema {
     layer_mask_ = { 1.f / sim_state_->sim()->param().landscape.prey_kernel.maxK(),
                     1.f / sim_state_->sim()->param().landscape.pred_kernel.maxK(),
                     1.f/*,
-                    1.f */}; 
+                    1.f */ };
     org_layer_mask_ = layer_mask_;
     selected_ = sim_state_->sim()->param().gui.selected;
-    camera_.reset( new glsl::Camera());
-    cameraManip_.lookAt(glm::dvec3(0,0,1), glm::dvec3(0), glm::dvec3(0,1,0));
+    camera_.reset(new glsl::Camera());
+    cameraManip_.lookAt(glm::dvec3(0, 0, 1), glm::dvec3(0), glm::dvec3(0, 1, 0));
     glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 
     // Layer texture array
-    glCreateTextures(GL_TEXTURE_2D_ARRAY, 1 , &LayerTex_);
+    glCreateTextures(GL_TEXTURE_2D_ARRAY, 1, &LayerTex_);
     glTextureStorage3D(LayerTex_, 1, GL_R32F, sim_state_->dim(), sim_state_->dim(), cine2::Landscape::Layers::max_layer);
     glTextureParameteri(LayerTex_, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTextureParameteri(LayerTex_, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -79,7 +79,7 @@ namespace cinema {
     if (selection >= 0 && selection < 6) {
       if (selected_[selection] = !selected_[selection]) {
         layer_mask_[selection] = org_layer_mask_[selection];
-      } 
+      }
     }
     ::InvalidateRect(m_hWnd, NULL, TRUE);
     return 1;
@@ -89,12 +89,12 @@ namespace cinema {
   void GLLandscapeWin::on_size()
   {
     float wh = static_cast<float>(sim_state_->dim());
-    glm::ivec4 vp(0, 0, winW_ , winH_);
+    glm::ivec4 vp(0, 0, winW_, winH_);
     auto world = glm::dvec4(0, wh, 0, wh);
     auto b = 10;  // border
-    vp = (vp[2] > vp[3]) 
-        ? glm::ivec4(b + ((vp[2] - vp[3]) >> 1), vp[1] + b, vp[3] - 2*b, vp[3] - 2*b)
-        : glm::ivec4(vp.x + b, b + ((vp[3] - vp[2]) >> 1), vp[2] - 2*b, vp[2] - 2*b);
+    vp = (vp[2] > vp[3])
+      ? glm::ivec4(b + ((vp[2] - vp[3]) >> 1), vp[1] + b, vp[3] - 2 * b, vp[3] - 2 * b)
+      : glm::ivec4(vp.x + b, b + ((vp[3] - vp[2]) >> 1), vp[2] - 2 * b, vp[2] - 2 * b);
     camera_->setOrthoViewport(vp, world);
 
     // wrap
@@ -118,7 +118,7 @@ namespace cinema {
   void GLLandscapeWin::on_mouse_track(int dx, int dy)
   {
     if (hit_test(trackStartX_, trackStartY_, camera_->viewport())) {
-      auto shift = landscape_coor(0,0) - landscape_coor(dx, dy);
+      auto shift = landscape_coor(0, 0) - landscape_coor(dx, dy);
       cameraManip_.move(shift.x, -shift.y, 0.);
       on_size();
     }
@@ -175,7 +175,7 @@ namespace cinema {
     glBindTexture(GL_TEXTURE_2D_ARRAY, LayerTex_);
     glUseProgram(landscaleProg_);
     glUniformMatrix4fv(0, 1, false, &MV[0][0]);
-    for (size_t i=0; i<mask.size(); ++i) {
+    for (size_t i = 0; i < mask.size(); ++i) {
       mask[i] *= selected[i] ? 1.0f : 0.0f;
     }
     glUniform4fv(2, 1, mask.data());

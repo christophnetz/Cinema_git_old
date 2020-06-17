@@ -2,7 +2,7 @@
 #define APPWIN_H_INCLUDED
 
 #ifndef WIN32_LEAN_AND_MEAN
-  #define WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
 #endif
 
 #include <memory>
@@ -35,8 +35,8 @@
 namespace cinema {
 
 
-  class AppWin : 
-    public CFrameWindowImpl<AppWin>, 
+  class AppWin :
+    public CFrameWindowImpl<AppWin>,
     public CUpdateUI<AppWin>,
     public CMessageFilter,
     public cine2::SimulationHost,
@@ -48,7 +48,7 @@ namespace cinema {
 
     // Observer interface
     bool notify(void* userdata, long long msg) override;
-    
+
     // SimulationHost interface
     bool run(Observer* next, const cine2::Param&) override;
 
@@ -66,7 +66,7 @@ namespace cinema {
     std::unique_ptr<GLLandscapeWin> LandscapeWin_;
     std::unique_ptr<GLAnnWin> AnnWin_;
     std::unique_ptr<GLTimeLineWin> TimelineWin_;
-    
+
     BEGIN_UPDATE_UI_MAP(AppWin)
       UPDATE_ELEMENT(ID_VIEW_LANDSCAPE, UPDUI_MENUPOPUP)
       UPDATE_ELEMENT(ID_VIEW_ANN, UPDUI_MENUPOPUP)
@@ -77,33 +77,33 @@ namespace cinema {
       //UPDATE_ELEMENT(ID_SPEEDREAL, UPDUI_TOOLBAR)
       //UPDATE_ELEMENT(ID_SPEEDUP, UPDUI_TOOLBAR)
     END_UPDATE_UI_MAP()
-  
+
     BEGIN_MSG_MAP(AppWin)
       MESSAGE_HANDLER(WM_SIZE, OnSize);
-      MESSAGE_HANDLER(WM_CREATE, OnCreate);
-      MESSAGE_HANDLER(WM_CLOSE, OnClose);
-      MESSAGE_HANDLER(WM_DESTROY, OnDestroy);
-      MESSAGE_HANDLER(WM_ERASEBKGND, OnEraseBkgnd);
-      MESSAGE_HANDLER(WM_LBUTTONDOWN, OnLButtonDown);
-      MESSAGE_HANDLER(WM_LBUTTONUP, OnLButtonUp);
-      MESSAGE_HANDLER(WM_LBUTTONDBLCLK, OnLButtonDblClick);
-      MESSAGE_HANDLER(WM_RBUTTONDOWN, OnRButtonDown);
-      MESSAGE_HANDLER(WM_MOUSEMOVE, OnMouseMove);
-      MESSAGE_HANDLER(WM_MOUSEWHEEL, OnMouseWheel);
-      MESSAGE_HANDLER(CINEMA_WM_NOTIFY, OnNotify);
-    
-      COMMAND_ID_HANDLER(ID_TOGGLE_PAUSE, OnTogglePause);
-      COMMAND_ID_HANDLER(ID_SINGLE_STEP, OnSingleStep);
-      COMMAND_ID_HANDLER(ID_SINGLE_GEN, OnSingleGen);
+    MESSAGE_HANDLER(WM_CREATE, OnCreate);
+    MESSAGE_HANDLER(WM_CLOSE, OnClose);
+    MESSAGE_HANDLER(WM_DESTROY, OnDestroy);
+    MESSAGE_HANDLER(WM_ERASEBKGND, OnEraseBkgnd);
+    MESSAGE_HANDLER(WM_LBUTTONDOWN, OnLButtonDown);
+    MESSAGE_HANDLER(WM_LBUTTONUP, OnLButtonUp);
+    MESSAGE_HANDLER(WM_LBUTTONDBLCLK, OnLButtonDblClick);
+    MESSAGE_HANDLER(WM_RBUTTONDOWN, OnRButtonDown);
+    MESSAGE_HANDLER(WM_MOUSEMOVE, OnMouseMove);
+    MESSAGE_HANDLER(WM_MOUSEWHEEL, OnMouseWheel);
+    MESSAGE_HANDLER(CINEMA_WM_NOTIFY, OnNotify);
 
-      COMMAND_ID_HANDLER(ID_APP_EXIT, OnFileExit);
-      COMMAND_ID_HANDLER(ID_VIEW_PARAM, OnViewParam);
-      COMMAND_RANGE_HANDLER(ID_VIEW_LANDSCAPE, ID_VIEW_ANN, OnViewTopPane);
-      COMMAND_ID_HANDLER(ID_VIEW_TIMELINE, OnViewBottomPane);
-      COMMAND_ID_HANDLER(ID_PANE_CLOSE, OnPaneClose);
+    COMMAND_ID_HANDLER(ID_TOGGLE_PAUSE, OnTogglePause);
+    COMMAND_ID_HANDLER(ID_SINGLE_STEP, OnSingleStep);
+    COMMAND_ID_HANDLER(ID_SINGLE_GEN, OnSingleGen);
 
-      CHAIN_MSG_MAP(CUpdateUI<AppWin>);
-      CHAIN_MSG_MAP(CFrameWindowImpl<AppWin>);
+    COMMAND_ID_HANDLER(ID_APP_EXIT, OnFileExit);
+    COMMAND_ID_HANDLER(ID_VIEW_PARAM, OnViewParam);
+    COMMAND_RANGE_HANDLER(ID_VIEW_LANDSCAPE, ID_VIEW_ANN, OnViewTopPane);
+    COMMAND_ID_HANDLER(ID_VIEW_TIMELINE, OnViewBottomPane);
+    COMMAND_ID_HANDLER(ID_PANE_CLOSE, OnPaneClose);
+
+    CHAIN_MSG_MAP(CUpdateUI<AppWin>);
+    CHAIN_MSG_MAP(CFrameWindowImpl<AppWin>);
     END_MSG_MAP()
 
     LRESULT OnSize(UINT, WPARAM, LPARAM, BOOL&);
@@ -129,12 +129,12 @@ namespace cinema {
     LRESULT OnPaneClose(WORD /*wNotifyCode*/, WORD /*wID*/, HWND hWndCtl, BOOL& bHandled);
 
     LRESULT OnNotify(UINT, WPARAM, LPARAM, BOOL&);
- 
+
   private:
     void test_breakpoint();
     void emulate_breakpoint();
     void break_at_next_frame();
-  
+
     HACCEL accel_;
     int winW_, winH_;
     bool tracking_;

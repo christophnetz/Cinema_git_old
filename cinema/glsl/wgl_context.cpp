@@ -5,41 +5,41 @@
 #include "wgl_context.hpp"
 
 
-namespace glsl { 
-  
-  
+namespace glsl {
+
+
   class glslDummyWin
   {
     static const TCHAR* ClassName;
     static const TCHAR* WindowName;
 
   public:
-    glslDummyWin() : hInstance(NULL), hWnd(NULL), cAtom(NULL), hRC(NULL)  
+    glslDummyWin() : hInstance(NULL), hWnd(NULL), cAtom(NULL), hRC(NULL)
     {
       GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS, nullptr, &hInstance);
       WNDCLASS wc;
-      memset((void*)&wc, 0, sizeof(WNDCLASS));
+      memset((void*)& wc, 0, sizeof(WNDCLASS));
       wc.style = CS_OWNDC;
       wc.lpfnWndProc = &WndProc;
       wc.hInstance = hInstance;
       wc.lpszClassName = ClassName;
       cAtom = RegisterClass(&wc);
-      hWnd = CreateWindow( 
+      hWnd = CreateWindow(
         ClassName,
         WindowName,
-        WS_OVERLAPPED, 
+        WS_OVERLAPPED,
         CW_USEDEFAULT,
         CW_USEDEFAULT,
         CW_USEDEFAULT,
         CW_USEDEFAULT,
-        (HWND) NULL,
-        (HMENU) NULL,
-        hInstance, 
-        (LPVOID)(this));    
+        (HWND)NULL,
+        (HMENU)NULL,
+        hInstance,
+        (LPVOID)(this));
     }
 
 
-    void Destroy() 
+    void Destroy()
     {
       HDC hDC = GetDC(hWnd);
       wglMakeCurrent(hDC, NULL);
@@ -51,31 +51,31 @@ namespace glsl {
     }
 
 
-    static LRESULT WINAPI WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
+    static LRESULT WINAPI WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     {
       switch (uMsg)
       {
-        case WM_CREATE:
+      case WM_CREATE:
+      {
+        glslDummyWin* self = (glslDummyWin*)((LPCREATESTRUCT)(lParam))->lpCreateParams;
+        HDC hDC = GetDC(hWnd);
+        PIXELFORMATDESCRIPTOR pfd;
+        memset((void*)& pfd, 0, sizeof(PIXELFORMATDESCRIPTOR));
+        pfd.nSize = sizeof(PIXELFORMATDESCRIPTOR);
+        pfd.nVersion = 1;
+        pfd.dwFlags = PFD_SUPPORT_OPENGL;
+        pfd.iPixelType = PFD_TYPE_RGBA;
+        int nPixelFormat = ChoosePixelFormat(hDC, &pfd);
+        if (nPixelFormat && SetPixelFormat(hDC, nPixelFormat, &pfd))
         {
-          glslDummyWin* self = (glslDummyWin*)((LPCREATESTRUCT)(lParam))->lpCreateParams;
-          HDC hDC = GetDC(hWnd);
-          PIXELFORMATDESCRIPTOR pfd;
-          memset((void*)&pfd, 0, sizeof(PIXELFORMATDESCRIPTOR));
-          pfd.nSize  = sizeof(PIXELFORMATDESCRIPTOR);
-          pfd.nVersion   = 1;
-          pfd.dwFlags    = PFD_SUPPORT_OPENGL;
-          pfd.iPixelType = PFD_TYPE_RGBA;
-          int nPixelFormat = ChoosePixelFormat(hDC, &pfd);
-          if (nPixelFormat && SetPixelFormat (hDC, nPixelFormat, &pfd))
-          {
-            self->hRC = wglCreateContext(hDC);
-            wglMakeCurrent(hDC, self->hRC);
-          }
-          ReleaseDC(hWnd, hDC);
-          return 0;
+          self->hRC = wglCreateContext(hDC);
+          wglMakeCurrent(hDC, self->hRC);
         }
+        ReleaseDC(hWnd, hDC);
+        return 0;
       }
-      return DefWindowProc(hWnd, uMsg, wParam, lParam); 
+      }
+      return DefWindowProc(hWnd, uMsg, wParam, lParam);
     }
 
   public:
@@ -85,7 +85,7 @@ namespace glsl {
     HMODULE hInstance;
   };
 
-  
+
   const TCHAR* glslDummyWin::ClassName = _T("{25324927-A9BE-4399-B6E9-F8F5966BB528}");
   const TCHAR* glslDummyWin::WindowName = _T("{B68FEF08-7169-4661-84C1-29B5F705099C}");
 
@@ -112,8 +112,8 @@ namespace glsl {
           wgl_coverage_samples = WGL_COVERAGE_SAMPLES_NV;
         }
       }
-      int iAttribs[2][24] = { 
-      { 
+      int iAttribs[2][24] = {
+      {
         WGL_SUPPORT_OPENGL_ARB,   1,                          // Must support OGL rendering
         WGL_DRAW_TO_WINDOW_ARB,   1,                          // pf that can run a window
         WGL_ACCELERATION_ARB,     WGL_FULL_ACCELERATION_ARB,  // must be HW accelerated
@@ -123,9 +123,9 @@ namespace glsl {
         wgl_sample_buffer_arb,    (colorSamples ? 1 : 0),
         wgl_samples_arb,          colorSamples,
         wgl_coverage_samples,     coverageSamples,
-        0, 0 
+        0, 0
       },
-      { 
+      {
         WGL_SUPPORT_OPENGL_ARB,   1,                          // Must support OGL rendering
         WGL_DRAW_TO_WINDOW_ARB,   1,                          // pf that can run a window
         WGL_ACCELERATION_ARB,     WGL_FULL_ACCELERATION_ARB,  // must be HW accelerated
@@ -137,8 +137,8 @@ namespace glsl {
         wgl_sample_buffer_arb,    (colorSamples ? 1 : 0),
         wgl_samples_arb,          colorSamples,
         wgl_coverage_samples,     coverageSamples,
-        0, 0 
-      }};
+        0, 0
+      } };
       FLOAT fAttribs[] = { 0, 0 };
       int pixelFormat;
       UINT numFormats;
@@ -160,8 +160,8 @@ namespace glsl {
     }
     return hRC;
   }
-  
-  
+
+
   HGLRC CreateContext(HDC hDC)
   {
     HGLRC hGLRC = NULL;
@@ -175,11 +175,11 @@ namespace glsl {
 #endif
       0, 0,
     };
-    if ((hGLRC = CreateContext(hDC, iAttribs, 4, 8, 1))) 
+    if ((hGLRC = CreateContext(hDC, iAttribs, 4, 8, 1)))
     {
       glEnable(GL_MULTISAMPLE);
     }
-    else 
+    else
     {
       return NULL;
     }
@@ -209,7 +209,7 @@ namespace glsl {
   }
 
 
-  Context::Context(::HWND hWnd) : Context() 
+  Context::Context(::HWND hWnd) : Context()
   {
     hWnd_ = hWnd;
     hDC_ = GetDC(hWnd_);
@@ -279,7 +279,7 @@ namespace glsl {
   }
 
 
-  int Context::PixelFormat() const 
+  int Context::PixelFormat() const
   {
     return ::GetPixelFormat(hDC_);
   }

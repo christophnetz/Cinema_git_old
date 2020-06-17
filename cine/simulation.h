@@ -39,7 +39,7 @@ namespace cine2 {
       WATCHDOG,             // send to confirm app is running
     };
 
-  public: 
+  public:
     explicit Simulation(const Param& param);
     ~Simulation() {}
 
@@ -55,7 +55,7 @@ namespace cine2 {
     int dim() const { return landscape_.dim(); }
 
     // returns completion
-    bool run(Observer* observer = nullptr); 
+    bool run(Observer * observer = nullptr);
 
   private:
     void simulate_timestep();
@@ -83,9 +83,9 @@ namespace cine2 {
 
     const Simulation* simulation() const { return sim_.get(); }
 
-    virtual bool run(Observer* observer, const Param& param) 
+    virtual bool run(Observer* observer, const Param& param)
     {
-      sim_.reset(new Simulation(param) );
+      sim_.reset(new Simulation(param));
       return sim_->run(observer);
     }
 

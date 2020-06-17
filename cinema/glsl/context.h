@@ -7,9 +7,9 @@
 
 
 #ifdef _WIN32 
-  #include "wgl_context.hpp"
+#include "wgl_context.hpp"
 #else
-  #error "Unsupported platform"
+#error "Unsupported platform"
 #endif
 
 

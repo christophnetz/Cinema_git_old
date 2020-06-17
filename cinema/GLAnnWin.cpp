@@ -23,8 +23,8 @@ namespace cinema {
     float* ptr_hist;
 
 
-    AnnRenderer(const GLSimState::ann_meta& indi) 
-    : cameraManip(1000.0), zoom(1.0), scale(1.0), yorg(0), M(1), ann(indi), 
+    AnnRenderer(const GLSimState::ann_meta& indi)
+      : cameraManip(1000.0), zoom(1.0), scale(1.0), yorg(0), M(1), ann(indi),
       tex(GL_NONE), tex_hist(GL_NONE), vbo_hist(GL_NONE), ptr_hist(nullptr)
     {
     }
@@ -44,19 +44,19 @@ namespace cinema {
       }
       else if (KeyState() & 1) {
         double s = (zDelta < 0) ? 0.9 : 1.1;
-        scale = std::max(0.01, s * scale); 
+        scale = std::max(0.01, s * scale);
       }
     }
 
     // [-1,-1,1,1]
-    glm::dvec2 ann_coor(int x, int y, const GLWin* glWin)
+    glm::dvec2 ann_coor(int x, int y, const GLWin * glWin)
     {
       auto vp_coor = glWin->viewport_coor(x, y, camera->viewport());
       auto ls_coor = vp_coor + glm::dvec2(cameraManip.eye());
       return ls_coor / zoom;
     }
 
-    void on_mouse_track(int dx, int dy, const GLWin* glWin)
+    void on_mouse_track(int dx, int dy, const GLWin * glWin)
     {
       auto shift = ann_coor(0, 0, glWin) - ann_coor(dx, dy, glWin);
       cameraManip.move(0., -shift.y, 0.);
@@ -66,8 +66,8 @@ namespace cinema {
     void init_glsl()
     {
       camera.reset(new glsl::Camera());
-      cameraManip.lookAt(glm::dvec3(0,0,1), glm::dvec3(0), glm::dvec3(0,1,0));
-        
+      cameraManip.lookAt(glm::dvec3(0, 0, 1), glm::dvec3(0), glm::dvec3(0, 1, 0));
+
       glCreateTextures(GL_TEXTURE_2D, 1, &tex);
       glTextureStorage2D(tex, 1, GL_R32F, ann.weights, ann.N);
       glTextureParameteri(tex, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -120,7 +120,7 @@ namespace cinema {
       glTextureSubImage2D(tex_hist, 0, 0, 0, ann.weights, 1024, GL_RED, GL_FLOAT, nullptr);
       glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
       glBindBuffer(GL_PIXEL_UNPACK_BUFFER, GL_NONE);
-      
+
       glActiveTexture(GL_TEXTURE1);
       glBindTexture(GL_TEXTURE_2D, tex_hist);
       auto vp = glm::ivec4(camera->viewport());
@@ -145,7 +145,7 @@ namespace cinema {
       glTextureSubImage2D(tex, 0, 0, 0, ann.weights, ann.N, GL_RED, GL_FLOAT, nullptr);
       glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
       glBindBuffer(GL_PIXEL_UNPACK_BUFFER, GL_NONE);
-      
+
       glActiveTexture(GL_TEXTURE1);
       glBindTexture(GL_TEXTURE_2D, tex);
       auto vp = glm::ivec4(camera->viewport());
@@ -163,20 +163,20 @@ namespace cinema {
   };
 
 
-  GLAnnWin::GLAnnWin(GLSimState* sim_state) 
-  : GLWin(sim_state), 
+  GLAnnWin::GLAnnWin(GLSimState * sim_state)
+    : GLWin(sim_state),
     rectProg_(GL_NONE),
     annTanhProg_(GL_NONE),
     annLogP1Prog_(GL_NONE),
     colorMap_(3),
-    histogram_(true) 
+    histogram_(true)
   {
     display_[0].reset(new AnnRenderer(sim_state->prey_ann()));
     display_[1].reset(new AnnRenderer(sim_state->pred_ann()));
   }
 
-  
-  GLAnnWin::~GLAnnWin() 
+
+  GLAnnWin::~GLAnnWin()
   {
   }
 
@@ -186,10 +186,10 @@ namespace cinema {
     using Msg = cine2::Simulation::msg_type;
 
     switch (msg) {
-      case Msg::INITIALIZED:
-      case Msg::NEW_GENERATION:
-        ::InvalidateRect(m_hWnd, NULL, TRUE);
-        break;
+    case Msg::INITIALIZED:
+    case Msg::NEW_GENERATION:
+      ::InvalidateRect(m_hWnd, NULL, TRUE);
+      break;
     }
   }
 
@@ -220,7 +220,7 @@ namespace cinema {
   {
     int screenX = GET_X_LPARAM(lParam);
     int screenY = GET_Y_LPARAM(lParam);
-    std::array<bool, 7> selected{false};
+    std::array<bool, 7> selected{ false };
     const char* title[7] = {
       "gradient",
       "bone",
@@ -231,7 +231,7 @@ namespace cinema {
       "histograms"
     };
 
-    selected[colorMap_] = true; 
+    selected[colorMap_] = true;
     selected[6] = histogram_;
     ContextMenu menu(title, 7);
     int selection = menu.track(*this, screenX, screenY, selected.data());

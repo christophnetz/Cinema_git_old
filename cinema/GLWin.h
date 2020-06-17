@@ -37,7 +37,7 @@ namespace cine2 {
 namespace cinema {
 
 
-  class GLWin : 
+  class GLWin :
     public CWindowImpl<GLWin>
   {
   public:
@@ -48,15 +48,15 @@ namespace cinema {
 
     BEGIN_MSG_MAP(GLWin)
       MESSAGE_HANDLER_SYNC(WM_CREATE, OnCreate);
-      MESSAGE_HANDLER_SYNC(WM_CLOSE, OnClose);
-      MESSAGE_HANDLER_SYNC(WM_ERASEBKGND, OnEraseBkgnd);
-      MESSAGE_HANDLER_SYNC(WM_SIZE, OnSize);
-      MESSAGE_HANDLER_SYNC(WM_LBUTTONDOWN, OnLButtonDown);
-      MESSAGE_HANDLER_SYNC(WM_LBUTTONUP, OnLButtonUp);
-      MESSAGE_HANDLER_SYNC(WM_LBUTTONDBLCLK, OnLButtonDblClick);
-      MESSAGE_HANDLER_SYNC(WM_RBUTTONDOWN, OnRButtonDown);
-      MESSAGE_HANDLER_SYNC(WM_MOUSEMOVE, OnMouseMove);
-      MESSAGE_HANDLER_SYNC(WM_MOUSEWHEEL, OnMouseWheel);
+    MESSAGE_HANDLER_SYNC(WM_CLOSE, OnClose);
+    MESSAGE_HANDLER_SYNC(WM_ERASEBKGND, OnEraseBkgnd);
+    MESSAGE_HANDLER_SYNC(WM_SIZE, OnSize);
+    MESSAGE_HANDLER_SYNC(WM_LBUTTONDOWN, OnLButtonDown);
+    MESSAGE_HANDLER_SYNC(WM_LBUTTONUP, OnLButtonUp);
+    MESSAGE_HANDLER_SYNC(WM_LBUTTONDBLCLK, OnLButtonDblClick);
+    MESSAGE_HANDLER_SYNC(WM_RBUTTONDOWN, OnRButtonDown);
+    MESSAGE_HANDLER_SYNC(WM_MOUSEMOVE, OnMouseMove);
+    MESSAGE_HANDLER_SYNC(WM_MOUSEWHEEL, OnMouseWheel);
     END_MSG_MAP()
 
     LRESULT OnCreate(UINT, WPARAM, LPARAM, BOOL& bHandled);
@@ -80,7 +80,7 @@ namespace cinema {
 
     // windows (x,y) -> [-1,-1,1,1];
     template <typename VP>
-    glm::dvec2 viewport_coor(int x, int y, const VP& vp) const
+    glm::dvec2 viewport_coor(int x, int y, const VP & vp) const
     {
       double x_ = double(x) - vp[0];
       double y_ = double(winH_ - y) - vp[1];
@@ -117,10 +117,10 @@ namespace cinema {
 
   // returns shift(1) | alt(2) | ctrl(4)
   unsigned KeyState();
-  void LoadTextureData(GLuint tex, GLenum texUnit, GLenum target, filesystem::path& path);
-  GLuint LoadTexture(GLenum texUnit, GLenum target, filesystem::path& path);
-  glm::dvec3 cameraScreenDirection(int winX, int winY, int winZ, const glm::dmat4& IVP, const glm::ivec4& viewport);
-  void WaitForSync(GLsync& sync);
+  void LoadTextureData(GLuint tex, GLenum texUnit, GLenum target, filesystem::path & path);
+  GLuint LoadTexture(GLenum texUnit, GLenum target, filesystem::path & path);
+  glm::dvec3 cameraScreenDirection(int winX, int winY, int winZ, const glm::dmat4 & IVP, const glm::ivec4 & viewport);
+  void WaitForSync(GLsync & sync);
 
 
   class ContextMenu
@@ -129,9 +129,9 @@ namespace cinema {
     ContextMenu(const char* const* items, int n);
     ~ContextMenu(void);
     int track(HWND hwnd, int x, int y, bool* checked);
- 
+
   private:
-    HMENU hmenu_; 
+    HMENU hmenu_;
     int entries_;
   };
 

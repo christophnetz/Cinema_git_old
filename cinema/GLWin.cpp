@@ -16,21 +16,21 @@
 namespace cinema {
 
 
-  ContextMenu::ContextMenu(const char* const* items, int n) 
+  ContextMenu::ContextMenu(const char* const* items, int n)
     : hmenu_(0), entries_(0)
   {
     HMENU hmenu = CreatePopupMenu();
     MENUITEMINFO mii;
-    memset((void*)&mii, 0, sizeof(MENUITEMINFO));
+    memset((void*)& mii, 0, sizeof(MENUITEMINFO));
     mii.cbSize = sizeof(MENUITEMINFO);
     mii.fMask = MIIM_ID | MIIM_STRING | MIIM_STATE;
     mii.fType = MFT_STRING;
     mii.fState = MFS_ENABLED;
     for (int i = 0; i < n; ++items, ++i) {
-      mii.wID = i+1;
+      mii.wID = i + 1;
       CA2T pszt(*items);
       mii.dwTypeData = pszt;
-      BOOL ok = InsertMenuItem(hmenu, i+1, FALSE, &mii);
+      BOOL ok = InsertMenuItem(hmenu, i + 1, FALSE, &mii);
       if (!ok) {
         throw std::exception("ContextMenu::ContextMenu failed");
       }
@@ -39,7 +39,7 @@ namespace cinema {
     entries_ = n;
   }
 
-  
+
   ContextMenu::~ContextMenu(void)
   {
     DestroyMenu(hmenu_);
@@ -47,16 +47,16 @@ namespace cinema {
 
 
   int ContextMenu::track(HWND hwnd, int x, int y, bool* checked)
-    {
+  {
     for (int i = 0; i < entries_; ++i) {
-      CheckMenuItem(hmenu_, i+1, checked[i] ? MF_BYCOMMAND | MF_CHECKED :  MF_BYCOMMAND | MF_UNCHECKED);
+      CheckMenuItem(hmenu_, i + 1, checked[i] ? MF_BYCOMMAND | MF_CHECKED : MF_BYCOMMAND | MF_UNCHECKED);
     }
     BOOL ret = TrackPopupMenuEx(hmenu_, TPM_LEFTALIGN | TPM_RETURNCMD, x, y, hwnd, NULL);
-    return static_cast<int>(ret)-1;
+    return static_cast<int>(ret) - 1;
   }
 
 
-  void LoadTextureData(GLuint tex, GLenum texUnit, GLenum target, filesystem::path& path)
+  void LoadTextureData(GLuint tex, GLenum texUnit, GLenum target, filesystem::path & path)
   {
     auto FileName = path.string();
     GLint width, height, channels;
@@ -82,7 +82,7 @@ namespace cinema {
   }
 
 
-  GLuint LoadTexture(GLenum texUnit, GLenum target, filesystem::path& path)
+  GLuint LoadTexture(GLenum texUnit, GLenum target, filesystem::path & path)
   {
     GLuint tex = 0; glGenTextures(1, &tex);
     LoadTextureData(tex, texUnit, target, path);
@@ -90,7 +90,7 @@ namespace cinema {
   }
 
 
-  glm::dvec3 cameraScreenDirection(int winX, int winY, int winZ, const glm::dmat4& IVP, const glm::ivec4& viewport)
+  glm::dvec3 cameraScreenDirection(int winX, int winY, int winZ, const glm::dmat4 & IVP, const glm::ivec4 & viewport)
   {
     auto tmp = glm::dvec4(winX, winY, winZ, 1);
     tmp.x = (tmp.x - viewport[0]) / viewport[2];
@@ -102,7 +102,7 @@ namespace cinema {
   }
 
 
-  void WaitForSync(GLsync& sync)
+  void WaitForSync(GLsync & sync)
   {
     while (sync)
     {
@@ -120,14 +120,14 @@ namespace cinema {
   unsigned KeyState()
   {
     unsigned shift = (GetAsyncKeyState(VK_SHIFT) < 0) ? 1 : 0;
-    unsigned alt   = (GetAsyncKeyState(VK_MENU) < 0) ? 2 : 0;
-    unsigned ctrl  = (GetAsyncKeyState(VK_CONTROL) < 0) ? 4 : 0;
+    unsigned alt = (GetAsyncKeyState(VK_MENU) < 0) ? 2 : 0;
+    unsigned ctrl = (GetAsyncKeyState(VK_CONTROL) < 0) ? 4 : 0;
     return shift | alt | ctrl;
   }
 
 
-  GLWin::GLWin(GLSimState* sim_state)
-  : hDC_(NULL), winW_(0), winH_(0), mouseX_(0), mouseY_(0), tracking_(false), 
+  GLWin::GLWin(GLSimState * sim_state)
+    : hDC_(NULL), winW_(0), winH_(0), mouseX_(0), mouseY_(0), tracking_(false),
     sim_state_(sim_state)
   {
   }
@@ -138,7 +138,7 @@ namespace cinema {
   }
 
 
-  LRESULT GLWin::OnCreate(UINT, WPARAM, LPARAM, BOOL& bHandled)
+  LRESULT GLWin::OnCreate(UINT, WPARAM, LPARAM, BOOL & bHandled)
   {
     ::SetPixelFormat(GetDC(), sim_state_->ctx().PixelFormat(), NULL);
     hDC_ = GetDC();
@@ -146,7 +146,7 @@ namespace cinema {
     sim_state_->ctx().SwapInterval(0);
 #ifdef GLSL_DEBUG
     glEnable(GL_DEBUG_OUTPUT);
-    glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);    
+    glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
     glsl::SetDebugCallback(static_cast<glsl::GLSL_DEBUG_MSG_LEVEL>(GLSL_DEBUG));
 #endif
     // pass through child class
@@ -156,7 +156,7 @@ namespace cinema {
   }
 
 
-  LRESULT GLWin::OnClose(UINT, WPARAM, LPARAM, BOOL& bHandled)
+  LRESULT GLWin::OnClose(UINT, WPARAM, LPARAM, BOOL & bHandled)
   {
     // pass through child class
     this->on_close();
@@ -166,13 +166,13 @@ namespace cinema {
   }
 
 
-  LRESULT GLWin::OnEraseBkgnd(UINT, WPARAM, LPARAM, BOOL& bHandled)
+  LRESULT GLWin::OnEraseBkgnd(UINT, WPARAM, LPARAM, BOOL & bHandled)
   {
     if (winW_ && winH_) {
       glsl::ContextGuard _(sim_state_->ctx(), hDC_);
 #ifdef GLSL_DEBUG
       glEnable(GL_DEBUG_OUTPUT);
-      glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);    
+      glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
       glsl::SetDebugCallback(static_cast<glsl::GLSL_DEBUG_MSG_LEVEL>(GLSL_DEBUG));
 #endif
       glViewport(0, 0, winW_, winH_);
@@ -185,7 +185,7 @@ namespace cinema {
   }
 
 
-  LRESULT GLWin::OnSize(UINT, WPARAM, LPARAM lParam, BOOL& bHandled)
+  LRESULT GLWin::OnSize(UINT, WPARAM, LPARAM lParam, BOOL & bHandled)
   {
     winW_ = GET_X_LPARAM(lParam);
     winH_ = GET_Y_LPARAM(lParam);

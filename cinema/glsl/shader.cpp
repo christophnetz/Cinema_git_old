@@ -69,7 +69,7 @@ namespace shader {
     
   )glsl";
 
-  
+
   const char* landscapeFrag = R"glsl(
 
     layout (binding = 1) uniform sampler2DArray Texture;
@@ -327,7 +327,7 @@ namespace shader {
     glDetachShader(prog, fSh);
     glDeleteShader(vSh);
     glDeleteShader(fSh);
-    if (gSh) 
+    if (gSh)
     {
       glDetachShader(prog, gSh);
       glDeleteShader(gSh);

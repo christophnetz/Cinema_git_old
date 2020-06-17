@@ -6,12 +6,12 @@
 
 namespace cine2 {
 
-  
+
   // Poor mans observer.
   class Observer
   {
   public:
-    Observer(): next_observer_(nullptr) {}
+    Observer() : next_observer_(nullptr) {}
     virtual ~Observer() {}
 
     // notification
@@ -22,10 +22,10 @@ namespace cine2 {
 
 
     // chain obs at the end of the list of this if not nullptr
-    Observer& chain_back(Observer* obs) 
+    Observer& chain_back(Observer* obs)
     {
       if (obs == this || obs == nullptr) return *this;
-      Observer* last = this;
+      Observer * last = this;
       while (last->next_observer_) last = last->next_observer_;
       last->next_observer_ = obs;
       return *this;

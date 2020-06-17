@@ -111,7 +111,7 @@ namespace cine2 {
   if ((observer ? !observer->notify(this, msg) : true)) return false
 
 
-  bool Simulation::run(Observer* observer)
+  bool Simulation::run(Observer * observer)
   {
     // burn-in
     simulation_observer_notify(INITIALIZED);

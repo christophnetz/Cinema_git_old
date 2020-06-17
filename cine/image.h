@@ -37,7 +37,7 @@ namespace cine2 {
     int height() const { return height_; }
     unsigned* data() { return data_.get(); }
     const unsigned* data() const { return data_.get(); }
-  
+
   private:
     int width_;
     int height_;
@@ -71,7 +71,7 @@ namespace cine2 {
   /// \param  image     The image.
   /// \param  fileName  Filename of the file.
   void save_image(const Image& image, const std::string& fileName);
-  
+
 }
 
 

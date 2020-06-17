@@ -14,8 +14,8 @@
 #define breakpoint_guard std::lock_guard<std::mutex> ____(breakpoint_mutex_)
 
 
-namespace cinema { 
-  
+namespace cinema {
+
 
   namespace {
 
@@ -23,7 +23,7 @@ namespace cinema {
     std::atomic<DWORD> gui_thread_native_handle = 0;
 
 
-    BOOL WINAPI CtrlHandlerRoutine(_In_ DWORD dwCtrlType) 
+    BOOL WINAPI CtrlHandlerRoutine(_In_ DWORD dwCtrlType)
     {
       using namespace std::chrono_literals;
       switch (dwCtrlType)
@@ -57,7 +57,7 @@ namespace cinema {
 
 
   AppWin::AppWin()
-  : SimulationHost(),
+    : SimulationHost(),
     accel_(0), tracking_(false)
   {
     application_terminated = false;
@@ -82,7 +82,7 @@ namespace cinema {
 
     switch (msg) {
     case msg_type::INITIALIZED:
-      atomic_store(application_initialized,false);
+      atomic_store(application_initialized, false);
       ::SendMessage(m_hWnd, CINEMA_WM_NOTIFY, MAKEPARAM64(msg, 0), MAKEPARAM64(simulation()->generation(), simulation()->timestep()));
       while (!atomic_load(application_initialized)) {
         std::this_thread::sleep_for(10ms);
@@ -130,22 +130,22 @@ namespace cinema {
       LandscapePane_.SetClient(*LandscapeWin_);
       AnnPane_.SetClient(*AnnWin_);
       TimelinePane_.SetClient(*TimelineWin_);
-      breakpoints_ = sim_->param().gui.breakpoints; 
+      breakpoints_ = sim_->param().gui.breakpoints;
       atomic_store(application_initialized, true);   // signal completion
     }
     case msg_type::NEW_GENERATION:
-        snprintf(buf, 128, "Generation %d%s", g, (simulation()->fixed() ? "*" : ""));
-        StatusBar_.SetPaneText(ID_PANE_GENERATION, CA2T(buf));
+      snprintf(buf, 128, "Generation %d%s", g, (simulation()->fixed() ? "*" : ""));
+      StatusBar_.SetPaneText(ID_PANE_GENERATION, CA2T(buf));
     case msg_type::POST_TIMESTEP:
-        snprintf(buf, 128, "Time %d", t);
-        StatusBar_.SetPaneText(ID_PANE_TIMESTEP, CA2T(buf));
-        break;
+      snprintf(buf, 128, "Time %d", t);
+      StatusBar_.SetPaneText(ID_PANE_TIMESTEP, CA2T(buf));
+      break;
     case msg_type::FINISHED:
-        if (!simulation()->param().gui.wait_for_close) {
-          PostQuitMessage(0);
-        }
-        StatusBar_.SetPaneText(ID_DEFAULT_PANE, _T("Finished"));
-        break;
+      if (!simulation()->param().gui.wait_for_close) {
+        PostQuitMessage(0);
+      }
+      StatusBar_.SetPaneText(ID_DEFAULT_PANE, _T("Finished"));
+      break;
     }
     return 0;
   }
@@ -162,14 +162,14 @@ namespace cinema {
     auto hRes = _Module.Init(NULL, hInstance);
     if (FAILED(hRes)) return false;
     _Module.AddMessageLoop(&theLoop);
-    if(CreateEx() == NULL) return false;
+    if (CreateEx() == NULL) return false;
     ShowWindow(SW_SHOWDEFAULT);
 
     // create simulation thread
     chain_back(next);   // chain observer
-    auto sim_thread = std::thread([&simres, &param, this](Observer* obs) { 
-      simres = SimulationHost::run(obs, param); 
-    }, this);
+    auto sim_thread = std::thread([&simres, &param, this](Observer * obs) {
+      simres = SimulationHost::run(obs, param);
+      }, this);
 
     // run message loop
     theLoop.Run();
@@ -184,10 +184,10 @@ namespace cinema {
 
   BOOL AppWin::PreTranslateMessage(MSG* pMsg)
   {
-    if(accel_ != NULL)
+    if (accel_ != NULL)
     {
-        if(::TranslateAccelerator(m_hWnd, accel_, pMsg))
-            return TRUE;
+      if (::TranslateAccelerator(m_hWnd, accel_, pMsg))
+        return TRUE;
     }
     if (CFrameWindowImpl<AppWin>::PreTranslateMessage(pMsg)) {
       return TRUE;
@@ -203,7 +203,7 @@ namespace cinema {
     const double phi = 1.6180339887;
     ResizeClient(1024, int(1024. / phi));
 
-                     // status bar
+    // status bar
     m_hWndStatusBar = StatusBar_.Create(*this);
     int arrPanes[] = { ID_DEFAULT_PANE, ID_PANE_GENERATION, ID_PANE_TIMESTEP, ID_PANE_MS };
     StatusBar_.SetPanes(arrPanes, sizeof(arrPanes) / sizeof(int), false);
@@ -234,7 +234,7 @@ namespace cinema {
     UISetCheck(ID_VIEW_TIMELINE, 1);
 
     accel_ = ::AtlLoadAccelerators(IDR_CINEMA);
-    CMessageLoop* pLoop = _Module.GetMessageLoop();
+    CMessageLoop * pLoop = _Module.GetMessageLoop();
     ATLASSERT(pLoop != NULL);
     pLoop->AddMessageFilter(this);
 
@@ -247,7 +247,7 @@ namespace cinema {
   }
 
 
-  LRESULT AppWin::OnClose(UINT, WPARAM, LPARAM, BOOL &bHandled)
+  LRESULT AppWin::OnClose(UINT, WPARAM, LPARAM, BOOL & bHandled)
   {
     atomic_store(application_finished, true);
     LandscapeWin_->on_close();
@@ -258,7 +258,7 @@ namespace cinema {
   }
 
 
-  LRESULT AppWin::OnDestroy(UINT, WPARAM, LPARAM, BOOL &bHandled)
+  LRESULT AppWin::OnDestroy(UINT, WPARAM, LPARAM, BOOL & bHandled)
   {
     atomic_store(application_terminated, true);
     LandscapeWin_->DestroyWindow();
@@ -269,14 +269,14 @@ namespace cinema {
   }
 
 
-  LRESULT AppWin::OnEraseBkgnd(UINT, WPARAM, LPARAM, BOOL& bHandled)
+  LRESULT AppWin::OnEraseBkgnd(UINT, WPARAM, LPARAM, BOOL & bHandled)
   {
     bHandled = TRUE;
     return 1;
   }
 
 
-  LRESULT AppWin::OnSize(UINT, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+  LRESULT AppWin::OnSize(UINT, WPARAM wParam, LPARAM lParam, BOOL & bHandled)
   {
     winW_ = GET_X_LPARAM(lParam);
     winH_ = GET_Y_LPARAM(lParam);
@@ -348,7 +348,7 @@ namespace cinema {
   }
 
 
-  LRESULT AppWin::OnViewTopPane(WORD /*wNotifyCode*/, WORD wID, HWND hWndCtl, BOOL& bHandled)
+  LRESULT AppWin::OnViewTopPane(WORD /*wNotifyCode*/, WORD wID, HWND hWndCtl, BOOL & bHandled)
   {
     bool hide = (UIGetState(wID) & UPDUI_CHECKED) ? true : false;
     int mode = vSplit_.GetSinglePaneMode();
@@ -371,7 +371,7 @@ namespace cinema {
   }
 
 
-  LRESULT AppWin::OnViewBottomPane(WORD /*wNotifyCode*/, WORD wID, HWND hWndCtl, BOOL& bHandled)
+  LRESULT AppWin::OnViewBottomPane(WORD /*wNotifyCode*/, WORD wID, HWND hWndCtl, BOOL & bHandled)
   {
     bool hide = (UIGetState(wID) & UPDUI_CHECKED) ? true : false;
     int mode = hSplit_.GetSinglePaneMode();
@@ -389,7 +389,7 @@ namespace cinema {
   }
 
 
-  LRESULT AppWin::OnPaneClose(WORD /*wNotifyCode*/, WORD wID, HWND hWndCtl, BOOL& bHandled)
+  LRESULT AppWin::OnPaneClose(WORD /*wNotifyCode*/, WORD wID, HWND hWndCtl, BOOL & bHandled)
   {
     if (hWndCtl == LandscapePane_ || hWndCtl == AnnPane_) {
       WORD ID = (hWndCtl == LandscapePane_) ? ID_VIEW_LANDSCAPE : ID_VIEW_ANN;
@@ -416,7 +416,7 @@ namespace cinema {
   }
 
 
-  LRESULT AppWin::OnSingleStep(WORD /*wNotifyCode*/, WORD /*wID*/, HWND hWndCtl, BOOL& bHandled)
+  LRESULT AppWin::OnSingleStep(WORD /*wNotifyCode*/, WORD /*wID*/, HWND hWndCtl, BOOL & bHandled)
   {
     if (atomic_load(application_paused)) {
       breakpoint_guard;
@@ -427,7 +427,7 @@ namespace cinema {
   }
 
 
-  LRESULT AppWin::OnSingleGen(WORD /*wNotifyCode*/, WORD /*wID*/, HWND hWndCtl, BOOL& bHandled)
+  LRESULT AppWin::OnSingleGen(WORD /*wNotifyCode*/, WORD /*wID*/, HWND hWndCtl, BOOL & bHandled)
   {
     if (atomic_load(application_paused)) {
       breakpoint_guard;
@@ -448,12 +448,12 @@ namespace cinema {
     using namespace std::chrono_literals;
     {
       breakpoint_guard;
-      while (!breakpoints_.empty() &&  breakpoints_.front().first < simulation()->generation()) {
+      while (!breakpoints_.empty() && breakpoints_.front().first < simulation()->generation()) {
         breakpoints_.pop_front();   // remove breakpoint that are in the past
       }
       bool hit = !breakpoints_.empty()
-                && breakpoints_.front() == std::pair<int, int>(simulation()->generation(), simulation()->timestep());
-    
+        && breakpoints_.front() == std::pair<int, int>(simulation()->generation(), simulation()->timestep());
+
       if (hit) {
         StatusBar_.SetPaneText(ID_DEFAULT_PANE, _T("Breakpoint hit"));
         breakpoints_.pop_front();
@@ -479,7 +479,7 @@ namespace cinema {
 
   void AppWin::break_at_next_frame()
   {
-    (simulation()->timestep() == simulation()->param().T) 
+    (simulation()->timestep() == simulation()->param().T)
       ? breakpoints_.emplace_front(simulation()->generation() + 1, 0)
       : breakpoints_.emplace_front(simulation()->generation(), simulation()->timestep() + 1);
   }

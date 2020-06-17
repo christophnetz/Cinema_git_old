@@ -15,13 +15,13 @@ namespace game_watches {
   public:
     using clock = Clock;
     using duration = Duration;
-    
-    StopwatchImpl() 
-    { 
+
+    StopwatchImpl()
+    {
       epoch_ = start_ = clock::now();
-      reset(); 
+      reset();
     }
-    
+
     void start()
     {
       if (!running_) {
@@ -74,7 +74,7 @@ namespace game_watches {
   {
   public:
     Driftwatch() : rtticks_(0), watch_() {}
-    
+
     void tick(bool paused, bool realtime)
     {
       if (paused || !realtime) watch_.stop();
