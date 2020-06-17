@@ -66,6 +66,7 @@ namespace cine2 {
     clp_optional_val(landscape.grass_growth, 0.01f);
     clp_optional_val(landscape.predation_chance, 0.5f);
     clp_optional_val(landscape.dim, 512);
+    if ((param.landscape.dim & (param.landscape.dim - 1))) throw std::runtime_error("Landscape dimension not a power of 2");
 
 
     clp_optional_val(gui.wait_for_close, true);
