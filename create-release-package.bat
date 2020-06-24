@@ -8,3 +8,4 @@ xcopy build\media %tmpd%\media /i /s
 copy build\*.ini %tmpd%
 copy build\*.bat %tmpd%
 copy build\*.exe %tmpd%
+copy README.txt %tmpd%
